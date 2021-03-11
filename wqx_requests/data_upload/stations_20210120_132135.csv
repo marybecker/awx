@@ -1,0 +1,23 @@
+staSeq,locationName,ylat,xlong,sourceMapScale,horizCollectMethod,horizRefDatum,locationType,stateCd
+16788,KEELER BROOK,41.092,-73.4397,24000,Unknown,NAD83,River/Stream,CT
+15294,Norwalk River,41.1954,-73.4321,24000,Interpolation-Map,NAD83,River/Stream,CT
+16649,FARMILL RIVER,41.2633,-73.1047,24000,Unknown,NAD83,River/Stream,CT
+19955,NNT to Saugatuck River,41.2997,-73.3997,0,Interpolation-Satellite,WGS84,River/Stream,CT
+18447,West River,41.3312,-72.7066,0,Interpolation-Satellite,WGS84,River/Stream,CT
+15274,Sargent River,41.384,-72.988,24000,Interpolation-Map,NAD83,River/Stream,CT
+19956,Limekiln Brook,41.3919,-73.3909,0,Interpolation-Satellite,WGS84,River/Stream,CT
+19933,Thompson Brook,41.4019,-72.0443,0,Interpolation-Satellite,WGS84,River/Stream,CT
+17324,Latimer Brook,41.4073,-72.2217,24000,Interpolation-Map,NAD83,River/Stream,CT
+20128,Susquetonscut Brook,41.5806,-72.1395,0,Interpolation-Satellite,WGS84,River/Stream,CT
+18921,"Shepaug River, Unnamed Tributary to",41.6057,-73.3397,0,Interpolation-Satellite,WGS84,River/Stream Perennial,CT
+19938,Mint Brook,41.6406,-72.3389,0,Interpolation-Satellite,WGS84,River/Stream,CT
+19957,Merryall Brook,41.6517,-73.4467,0,Interpolation-Satellite,WGS84,River/Stream,CT
+20127,Pequabuck River,41.6701,-72.9691,0,Interpolation-Satellite,WGS84,River/Stream,CT
+14392,Pequabuck River,41.6738,-72.8977,24000,Interpolation-Map,NAD83,River/Stream,CT
+19940,Gunn Brook,41.8,-73.379,0,Interpolation-Satellite,WGS84,River/Stream,CT
+16873,MOUNT HOPE RIVER,41.8814,-72.1639,24000,Unknown,NAD83,River/Stream,CT
+20129,Ocain Brook,41.8994,-73.2649,0,Interpolation-Satellite,WGS84,River/Stream,CT
+19931,Charters Brook,41.9033,-72.4056,0,Interpolation-Satellite,WGS84,River/Stream,CT
+20123,Labonte Brook,41.9036,-72.3077,0,Interpolation-Satellite,WGS84,River/Stream,CT
+20124,NNT to Sucker Brook,41.9169,-73.1154,0,Interpolation-Satellite,WGS84,River/Stream,CT
+20122,Deming Brook,41.9706,-73.2947,0,Interpolation-Satellite,WGS84,River/Stream,CT
