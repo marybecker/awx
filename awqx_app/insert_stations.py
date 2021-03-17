@@ -8,7 +8,7 @@ import argparse
 des = """
 ------------------------------------------------------------------------------------------
 Import Stations into Ambient Water Monitoring Data Exchange (wmdX) water quality database  
-Mary Becker - Last Updated 2021-03-10
+Mary Becker - Last Updated 2021-03-15
 ------------------------------------------------------------------------------------------
 Given input directory of excel template spreadsheets with new station information,
 automatically checks for constraints with the database schema and produces an
@@ -38,7 +38,7 @@ def readXlsx(file, errFile):
         try:
             with xlrd.open_workbook(file) as f:
                 sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
-                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:12]] for r in range(sheet.nrows)[1:]]
+                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:13]] for r in range(sheet.nrows)[0:]]
             return raw
         except FileNotFoundError as e:
             print(e)
@@ -60,9 +60,11 @@ folder = 'Upload/'
 insert_type = 'Stations/'
 fdir = glob.glob(ftp + '**/' + folder + insert_type + '*Stations*.xlsx')
 
+headerList = ['locationName', 'locationDescription', 'locationType', 'ylat', 'xlong', 'sourceMapScale',
+              'horizCollectMethod','horizRefDatum', 'stateCd', 'munName', 'subBasin', 'adbSegID', 'hydroID']
 SQLinsert = 'INSERT INTO awqx_test.stations (staSeq,locationName, locationDescription, locationType, ylat, xlong, ' \
-            'sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, adbSegID, ' \
-            'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            'sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, adbSegID,hydroID, ' \
+            'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
 SQLselect = 'SELECT Max(staSeq) + 1 FROM awqx_test.stations;'
 
@@ -83,9 +85,11 @@ try:
         fpath_out = fpath_base + '\\UploadedRpts\\' + uploadDate + file_name
         delim = '\t'
         raw = readXlsx(fpath_in, db_err)
+        header = raw[0]  # use to check header names in the excel file
+        raw = raw[1:]
         os.rename(fpath_in, fpath_out)
 
-        if raw is not None:
+        if raw is not None and header == headerList:
             with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
                 user_name = fpath_base.rsplit('\\')[-1]
@@ -104,7 +108,11 @@ try:
                     else:
                         print('success with file %s on row %s' % (file, i))
 
-                s = '\n'.join([delim.join(row) for row in db_err])
+                if len(db_err) < 1:
+                    s = 'All rows successfully inserted'
+                else:
+                    s = '\n'.join([delim.join(row) for row in db_err])
+
                 with open(fpath_err, 'w') as f:
                     f.write(s)
         else:

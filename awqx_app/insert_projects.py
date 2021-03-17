@@ -84,7 +84,7 @@ try:
         fpath_out = fpath_base + '\\UploadedRpts\\' + uploadDate + file_name
         delim = '\t'
         raw = readXlsx(fpath_in, db_err)
-        header = raw[0]  # could use to check header names in the excel file
+        header = raw[0]  # use to check header names in the excel file
         raw = raw[1:]
         os.rename(fpath_in, fpath_out)
 
@@ -106,7 +106,11 @@ try:
                     else:
                         print('success with file %s on row %s' % (file, i))
 
-                s = '\n'.join([delim.join(row) for row in db_err])
+                if len(db_err) < 1:
+                    s = 'All rows successfully inserted'
+                else:
+                    s = '\n'.join([delim.join(row) for row in db_err])
+
                 with open(fpath_err, 'w') as f:
                     f.write(s)
         else:

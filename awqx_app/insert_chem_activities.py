@@ -156,7 +156,11 @@ try:
                     else:
                         print('success with file %s on row %s' % (file, i))
 
-                s = '\n'.join([delim.join(row) for row in db_err])
+                if len(db_err) < 1:
+                    s = 'All rows successfully inserted'
+                else:
+                    s = '\n'.join([delim.join(row) for row in db_err])
+
                 with open(fpath_err, 'w') as f:
                     f.write(s)
         else:
