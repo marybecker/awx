@@ -1,6 +1,7 @@
 # Ambient Water Data Exchange (awX) v0.3.10
-![awx](web_portal_app/images/waterDB.svg)
+<img src="web_portal_app/images/waterDB.svg" alt="awX" width="100px">
 <hr>
+
 **Water Monitoring and Assessment Program**
 **CT Dept. of Energy and Environmental Protection**
 
