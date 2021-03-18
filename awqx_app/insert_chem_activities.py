@@ -39,7 +39,7 @@ def readXlsx(file, errFile):
         try:
             with xlrd.open_workbook(file) as f:
                 sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
-                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:18]] for r in range(sheet.nrows)[0:]]
+                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:20]] for r in range(sheet.nrows)[0:]]
                 return raw
         except FileNotFoundError as e:
             print(e)
@@ -94,18 +94,20 @@ fdir = glob.glob(ftp+'**/'+folder+insert_type+'*ChemActivities*.xlsx')
 
 headerList = ['staSeq', 'ProjectIdentifier', 'ActivityTypeCode', 'ActivityStartDate', 'ActivityTime',
               'SampleCollectionEquipmentCommentText', 'SampleCollectionMethodIdentifier',
-              'SamplePreparationMethodIdentifier','ActivityRelativeDepthName','ActivityDepthMeasureValue',
-              'ActivityDepthMeasureUnitCode','InstreamLocation', 'LabAccession','LaboratoryName',
-              'ActivityConductingOrganizationText','ActivityCommentText', 'ActContactLead','ActFieldCrew']
+              'SamplePreparationMethodIdentifier', 'ActivityRelativeDepthName', 'ActivityTopDepthMeasureValue',
+              'ActivityTopDepthMeasureUnitCode', 'ActivityBottomDepthMeasureValue',
+              'ActivityBottomDepthMeasureUnitCode', 'InstreamLocation', 'LabAccession', 'LaboratoryName',
+              'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew']
 
 SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
             'ActivityTime,SampleCollectionEquipmentCommentText, SampleCollectionMethodIdentifier, ' \
-            'SamplePreparationMethodIdentifier,ActivityRelativeDepthName, ActivityDepthMeasureValue, ' \
-            'ActivityDepthMeasureUnitCode, InstreamLocation, LabAccession, LaboratoryName, ' \
+            'SamplePreparationMethodIdentifier,ActivityRelativeDepthName, ActivityTopDepthMeasureValue, ' \
+            'ActivityTopDepthMeasureUnitCode, ActivityBottomDepthMeasureValue,' \
+            'ActivityBottomDepthMeasureUnitCode, InstreamLocation, LabAccession, LaboratoryName, ' \
             'ActivityConductingOrganizationText, ActivityCommentText, ActContactLead, ActFieldCrew, ' \
             'ActivityIdentifier, ActivityMediaName, ActivityMediaSubdivisionName, ActivityTimeZoneCodetimezone, ' \
             'SampleCollectionEquipmentName, createDate, createUser, lastUpdateDate, lastUpdateUser) ' \
-            'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
 
 with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
