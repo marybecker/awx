@@ -1,5 +1,5 @@
 import glob
-import mysql_connector as msc
+from awqx_app import mysql_connector as msc
 import xlrd
 from datetime import datetime
 import pytz
@@ -39,7 +39,7 @@ def readXlsx(file, errFile):
         try:
             with xlrd.open_workbook(file) as f:
                 sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
-                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:20]] for r in range(sheet.nrows)[0:]]
+                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:22]] for r in range(sheet.nrows)[0:]]
                 return raw
         except FileNotFoundError as e:
             print(e)
@@ -97,7 +97,8 @@ headerList = ['staSeq', 'ProjectIdentifier', 'ActivityTypeCode', 'ActivityStartD
               'SamplePreparationMethodIdentifier', 'ActivityRelativeDepthName', 'ActivityTopDepthMeasureValue',
               'ActivityTopDepthMeasureUnitCode', 'ActivityBottomDepthMeasureValue',
               'ActivityBottomDepthMeasureUnitCode', 'InstreamLocation', 'LabAccession', 'LaboratoryName',
-              'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew']
+              'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew',
+              'ActivityYlat', 'ActivityXlong']
 
 SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
             'ActivityTime,SampleCollectionEquipmentCommentText, SampleCollectionMethodIdentifier, ' \
@@ -105,9 +106,10 @@ SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, Acti
             'ActivityTopDepthMeasureUnitCode, ActivityBottomDepthMeasureValue,' \
             'ActivityBottomDepthMeasureUnitCode, InstreamLocation, LabAccession, LaboratoryName, ' \
             'ActivityConductingOrganizationText, ActivityCommentText, ActContactLead, ActFieldCrew, ' \
+            'ActivityYlat, ActivityXlong, ActivityhorizCollectMethod, ActivityhorizRefDatum,' \
             'ActivityIdentifier, ActivityMediaName, ActivityMediaSubdivisionName, ActivityTimeZoneCodetimezone, ' \
             'SampleCollectionEquipmentName, createDate, createUser, lastUpdateDate, lastUpdateUser) ' \
-            'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
 
 with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
@@ -135,16 +137,27 @@ try:
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.
                 for i in range(len(raw)):
                     # generate auto populated fields for grab chemistry
+                    if len(raw[0][20]) == 0:
+                        Ylat = 0
+                    else:
+                        Ylat = raw[0][20]
+                    if len(raw[0][21]) == 0:
+                        Xlong = 0
+                    else:
+                        Xlong = raw[0][21]
+                    actHorizCollectMethod = 'GPS-Unspecified'
+                    actHorizDatum = 'NAD83'
                     actID = str(str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
                                 + '-' + raw[i][4].replace(':', '') + '-' + 'CHEM-' + str(raw[i][9]) + raw[i][10])
                     actMedia = 'Water'
                     actMediaSub = 'Surface Water'
-                    t = datetime.fromisoformat(raw[0][3])
+                    t = datetime.fromisoformat(raw[i][3])
                     T = get_dst_change_points(int(t.strftime('%Y')))
                     timezone = is_in_dst(t, T)
                     equipment = 'Water Bottle'
                     user_name = fpath_base.rsplit('\\')[-1]
-                    V_insert = raw[i] + [actID] + [actMedia] + [actMediaSub] + [timezone] + \
+                    V_insert = raw[i][0:20] + [Ylat] + [Xlong]+ [actHorizCollectMethod] + [actHorizDatum] + \
+                               [actID] + [actMedia] + [actMediaSub] + [timezone] + \
                                [equipment] + [insDate] + [user_name] + [insDate] + \
                                [user_name]
                     ins = dbo.query(SQLinsert, V_insert)
@@ -173,3 +186,5 @@ try:
                 f.write(s)
 except FileNotFoundError as e:
     print(e)
+
+
