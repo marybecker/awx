@@ -61,10 +61,12 @@ insert_type = 'Stations/'
 fdir = glob.glob(ftp + '**/' + folder + insert_type + '*Stations*.xlsx')
 
 headerList = ['locationName', 'locationDescription', 'locationType', 'ylat', 'xlong', 'sourceMapScale',
-              'horizCollectMethod','horizRefDatum', 'stateCd', 'munName', 'subBasin', 'adbSegID', 'hydroID']
+              'horizCollectMethod', 'horizRefDatum', 'stateCd', 'munName', 'subBasin', 'adbSegID', 'hydroID',
+              'stationsCommentTxt']
 SQLinsert = 'INSERT INTO awqx_test.stations (staSeq,locationName, locationDescription, locationType, ylat, xlong, ' \
-            'sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, adbSegID,hydroID, ' \
-            'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+            'sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, ' \
+            'adbSegID,hydroID,stationsCommentTxt, ' \
+            'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
 SQLselect = 'SELECT Max(staSeq) + 1 FROM awqx_test.stations;'
 
@@ -117,6 +119,7 @@ try:
                     f.write(s)
         else:
             print('File Error - Not uploaded')
+            db_err += [['File Error - Not uploaded.  Check file type, column ordering and column names']]
             s = '\n'.join([delim.join([str(e) for e in row]) for row in db_err])
             with open(fpath_err, 'w') as f:
                 f.write(s)
