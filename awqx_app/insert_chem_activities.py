@@ -97,7 +97,7 @@ headerList = ['staSeq', 'ProjectIdentifier', 'ActivityTypeCode', 'ActivityStartD
               'SamplePreparationMethodIdentifier', 'ActivityRelativeDepthName', 'ActivityTopDepthMeasureValue',
               'ActivityTopDepthMeasureUnitCode', 'ActivityBottomDepthMeasureValue',
               'ActivityBottomDepthMeasureUnitCode', 'InstreamLocation', 'LabAccession', 'LaboratoryName',
-              'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead',
+              'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew',
               'ActivityYlat', 'ActivityXlong']
 
 SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
