@@ -1,13 +1,36 @@
 import glob
-from awqx_app import mysql_connector as msc
+import mysql_connector as msc
 import xlrd
 from datetime import datetime
 import pytz
 import os
 import argparse
 
-cf_dir = 'C:/Users/deepuser/Documents/cnf/user.cnf.txt'
-in_dir = 'C:/Users/deepuser/Documents/testFTP/'
+des = """
+------------------------------------------------------------------------------------------
+Import Field Meter Data into Ambient Water Data Exchange (awX) water quality database  
+Mary Becker - Last Updated 2021-05-04
+------------------------------------------------------------------------------------------
+Given input directory of excel template spreadsheets with new station information,
+automatically checks for constraints with the database schema and produces an
+error report for tuples that do not meet the constraints.  Tuples that do meet 
+requirements are inserted into the Field Meter Results table """
+
+parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
+parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+args = parser.parse_args()
+
+# build args into params...
+if args.in_dir is not None:
+    in_dir = args.in_dir
+else:
+    raise IOError
+
+if args.cf_dir is not None:
+    cf_dir = args.cf_dir
+else:
+    raise IOError
 
 # function to read in xlsx file as list
 def readXlsx(file, errFile):
@@ -93,32 +116,6 @@ with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
 p_name = [p_lu[i]['ProbeLabName'] for i in range(len(p_lu))]
 p_name_idx = {p_name[i]: i for i in range(len(p_name))}
 
-#########################################################################################
-#########################################################################################
-# db_err = []
-# ysi_file = 'C:/Users/deepuser/Documents/Projects/wqDB_docs/Data_Examples/ABM 2019 YSI Data Summary_11-01-2019.xlsx'
-# raw = readXlsx(ysi_file, db_err)
-# header = raw[0]
-#
-# data = raw[1:]  # slice off the data for access
-#
-# G = []
-# ysi_data = format_ysi_data(data, header, p_name, 11, G)
-#
-# f_data = []
-# for i in range(len(ysi_data)):
-#     k = p_name_idx[ysi_data[i][-1]]
-#     k_values = list(p_lu[k].values())[3:7]
-#     f_data += [ysi_data[i][1:-1] + k_values]
-#
-# t = datetime.fromisoformat(f_data[i][1])
-# T = get_dst_change_points(int(t.strftime('%Y')))
-# timezone = is_in_dst(t, T)
-
-#########################################################################################
-#########################################################################################
-
-
 with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
     print('found %s files to process: %s' % (len(fdir), fdir))
 
@@ -135,7 +132,7 @@ try:
         raw = readXlsx(fpath_in, db_err)
         header = raw[0]  # could use to check header names in the excel file
         raw = raw[1:]
-        # os.rename(fpath_in, fpath_out)
+        os.rename(fpath_in, fpath_out)
 
         # format probe data for insert (wide to long)
         G = []
