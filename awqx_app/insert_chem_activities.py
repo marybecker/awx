@@ -9,7 +9,7 @@ import argparse
 des = """
 ------------------------------------------------------------------------------------------
 Import Activities into Ambient Water Monitoring Data Exchange (wmdX) water quality database  
-Mary Becker - Last Updated 2021-03-10
+Mary Becker - Last Updated 2021-05-24
 ------------------------------------------------------------------------------------------
 Given input directory of excel template spreadsheets with new station information,
 automatically checks for constraints with the database schema and produces an
@@ -88,6 +88,7 @@ config_pw = config[1][1]
 
 # insert data from excel into table one line at a time.  generate an error rpt
 ftp = in_dir
+db = 'awqx'
 folder = 'Upload/'
 insert_type = 'Activities/'
 fdir = glob.glob(ftp+'**/'+folder+insert_type+'*ChemActivities*.xlsx')
@@ -100,7 +101,8 @@ headerList = ['staSeq', 'ProjectIdentifier', 'ActivityTypeCode', 'ActivityStartD
               'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew',
               'ActivityYlat', 'ActivityXlong']
 
-SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
+SQLinsert = 'INSERT INTO ' + db + '.activitychem ' \
+            '(staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
             'ActivityTime,SampleCollectionEquipmentCommentText, SampleCollectionMethodIdentifier, ' \
             'SamplePreparationMethodIdentifier,ActivityRelativeDepthName, ActivityTopDepthMeasureValue, ' \
             'ActivityTopDepthMeasureUnitCode, ActivityBottomDepthMeasureValue,' \
@@ -110,9 +112,9 @@ SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, Acti
             'ActivityIdentifier, ActivityMediaName, ActivityMediaSubdivisionName, ActivityTimeZoneCodetimezone, ' \
             'SampleCollectionEquipmentName, createDate, createUser, lastUpdateDate, lastUpdateUser) ' \
             'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
+SQLerrLog = 'INSERT INTO ' + db + '.errlog VALUES (?,?,?,?,?,?,?);'
 
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+with msc.MYSQL('localhost', db, 3306, config_uid, config_pw) as dbo:
     print('found %s files to process: %s' % (len(fdir), fdir))
 
 try:
@@ -131,7 +133,7 @@ try:
         os.rename(fpath_in, fpath_out)
 
         if raw is not None and header == headerList:
-            with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+            with msc.MYSQL('localhost', db, 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.
@@ -148,7 +150,7 @@ try:
                     actHorizCollectMethod = 'GPS-Unspecified'
                     actHorizDatum = 'NAD83'
                     actID = str(str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
-                                + '-' + raw[i][4].replace(':', '') + '-' + 'CHEM-' + str(raw[i][9]) + raw[i][10])
+                                + '-' + raw[i][4].replace(':', '') + '-' + raw[i][1] + '-' + str(raw[i][9]) + raw[i][10])
                     actMedia = 'Water'
                     actMediaSub = 'Surface Water'
                     t = datetime.fromisoformat(raw[i][3])

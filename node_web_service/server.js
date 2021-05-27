@@ -107,6 +107,112 @@ app.get('/Projects',function(req,res){
     conn.end();
 });
 
+app.get('/ChemActivities:prj',function(req,res){
+  var prj = req.params['prj']
+	var conn = mysql.createConnection(config);
+	conn.connect();
+    var SQL = 'SELECT * FROM awqx_test.activitychem WHERE ProjectIdentifier ="' + prj + '";';
+	console.log(SQL);
+	conn.query(SQL,function(err,response,fields){
+		if(err){ throw err; }
+		console.log(response);
+		var features = [];
+	  for (var i = 0; i<response.length; i++){
+        var point = [response[i].ProjectIdentifier, response[i].staSeq.toString(), 
+        response[i].ActivityIdentifier, response[i].ActivityTypeCode, 
+        response[i].ActivityMediaName, response[i].ActivityMediaSubdivisionName, 
+        response[i].ActivityStartDate.toISOString().substring(0,10), response[i].ActivityTime, 
+        response[i].ActivityTimeZoneCodetimezone, 
+        response[i].SampleCollectionMethodIdentifier, 
+        response[i].SampleCollectionEquipmentName, 
+        response[i].SampleCollectionEquipmentCommentText, 
+        response[i].ActivityConductingOrganizationText, 
+        response[i].ActivityCommentText, response[i].ActContactLead, 
+        response[i].ActFieldCrew, response[i].SamplePreparationMethodIdentifier, 
+        response[i].ActivityRelativeDepthName, 
+        response[i].ActivityTopDepthMeasureValue.toString(), 
+        response[i].ActivityTopDepthMeasureUnitCode, 
+        response[i].ActivityBottomDepthMeasureValue.toString(), 
+        response[i].ActivityBottomDepthMeasureUnitCode, 
+        response[i].InstreamLocation.toString(), response[i].LabAccession.toString(), 
+        response[i].LaboratoryName, response[i].ActivityYlat.toString(), 
+        response[i].ActivityXlong.toString(), response[i].ActivityhorizCollectMethod, 
+        response[i].ActivityhorizRefDatum, response[i].createDate.toISOString().substring(0,10), response[i].createUser, 
+        response[i].lastUpdateDate.toISOString().substring(0,10), response[i].lastUpdateUser]
+	    features.push(point);
+      }
+      
+      console.log(features);
+
+    var delim = '\t';
+    var s = "ProjectIdentifier"+ delim+ "staSeq"+ delim+ "ActivityIdentifier"+ delim+ 
+    "ActivityTypeCode"+ delim+ "ActivityMediaName"+ delim+ "ActivityMediaSubdivisionName"+ 
+    delim+ "ActivityStartDate"+ delim+ "ActivityTime"+ delim+ "ActivityTimeZoneCodetimezone"+ 
+    delim+ "SampleCollectionMethodIdentifier"+ delim+ "SampleCollectionEquipmentName"+ 
+    delim+ "SampleCollectionEquipmentCommentText"+ delim+ "ActivityConductingOrganizationText"
+    + delim+ "ActivityCommentText"+ delim+ "ActContactLead"+ delim+ "ActFieldCrew"+ 
+    delim+ "SamplePreparationMethodIdentifier"+ delim+ "ActivityRelativeDepthName"+ 
+    delim+ "ActivityTopDepthMeasureValue"+ delim+ "ActivityTopDepthMeasureUnitCode"+ 
+    delim+ "ActivityBottomDepthMeasureValue"+ delim+ "ActivityBottomDepthMeasureUnitCode"+ 
+    delim+ "InstreamLocation"+ delim+ "LabAccession"+ delim+ "LaboratoryName"+ 
+    delim+ "ActivityYlat"+ delim+ "ActivityXlong"+ delim+ "ActivityhorizCollectMethod"+ 
+    delim+ "ActivityhorizRefDatum"+ delim+ "createDate"+ delim+ "createUser"+ 
+    delim+ "lastUpdateDate"+ delim+ "lastUpdateUser\n";   //header line
+    for(var i=0; i<features.length; i++){  //convert each row of data to string
+      var ProjectIdentifier= features[i][0].toString() 
+      var staSeq= features[i][1].toString() 
+      var ActivityIdentifier= features[i][2].toString() 
+      var ActivityTypeCode= features[i][3].toString() 
+      var ActivityMediaName= features[i][4].toString() 
+      var ActivityMediaSubdivisionName= features[i][5].toString() 
+      var ActivityStartDate= features[i][6].toString() 
+      var ActivityTime= features[i][7].toString() 
+      var ActivityTimeZoneCodetimezone= features[i][8].toString() 
+      var SampleCollectionMethodIdentifier= features[i][9].toString() 
+      var SampleCollectionEquipmentName= features[i][10].toString() 
+      var SampleCollectionEquipmentCommentText= features[i][11].toString() 
+      var ActivityConductingOrganizationText= features[i][12].toString() 
+      var ActivityCommentText= features[i][13].toString() 
+      var ActContactLead= features[i][14].toString() 
+      var ActFieldCrew= features[i][15].toString() 
+      var SamplePreparationMethodIdentifier= features[i][16].toString() 
+      var ActivityRelativeDepthName= features[i][17].toString() 
+      var ActivityTopDepthMeasureValue= features[i][18].toString() 
+      var ActivityTopDepthMeasureUnitCode= features[i][19].toString() 
+      var ActivityBottomDepthMeasureValue= features[i][20].toString() 
+      var ActivityBottomDepthMeasureUnitCode= features[i][21].toString() 
+      var InstreamLocation= features[i][22].toString() 
+      var LabAccession= features[i][23].toString() 
+      var LaboratoryName= features[i][24].toString() 
+      var ActivityYlat= features[i][25].toString() 
+      var ActivityXlong= features[i][26].toString() 
+      var ActivityhorizCollectMethod= features[i][27].toString() 
+      var ActivityhorizRefDatum= features[i][28].toString() 
+      var createDate= features[i][29].toString() 
+      var createUser= features[i][30].toString() 
+      var lastUpdateDate= features[i][31].toString() 
+      var lastUpdateUser= features[i][32].toString()
+        s += ProjectIdentifier  + delim +  staSeq  + delim +  ActivityIdentifier  + delim +  
+        ActivityTypeCode  + delim +  ActivityMediaName  + delim +  ActivityMediaSubdivisionName  + 
+        delim +  ActivityStartDate  + delim +  ActivityTime  + delim +  ActivityTimeZoneCodetimezone  + 
+        delim +  SampleCollectionMethodIdentifier  + delim +  SampleCollectionEquipmentName  + 
+        delim +  SampleCollectionEquipmentCommentText  + delim +  ActivityConductingOrganizationText  + 
+        delim +  ActivityCommentText  + delim +  ActContactLead  + delim +  ActFieldCrew  + 
+        delim +  SamplePreparationMethodIdentifier  + delim +  ActivityRelativeDepthName  + 
+        delim +  ActivityTopDepthMeasureValue  + delim +  ActivityTopDepthMeasureUnitCode  + 
+        delim +  ActivityBottomDepthMeasureValue  + delim +  ActivityBottomDepthMeasureUnitCode  + 
+        delim +  InstreamLocation  + delim +  LabAccession  + delim +  LaboratoryName  + delim +  
+        ActivityYlat  + delim +  ActivityXlong  + delim +  ActivityhorizCollectMethod  + delim +  
+        ActivityhorizRefDatum  + delim +  createDate  + delim +  createUser  + delim +  lastUpdateDate  + 
+        delim +  lastUpdateUser +'\n';
+    }
+    console.log(s);
+    res.header('content-type', 'text/tab-separated-values; charset=utf-8');
+    res.send(s)
+        });
+    conn.end();
+});
+
 //set routing pattern
 
 //listen on 8080
