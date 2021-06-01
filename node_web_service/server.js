@@ -14,7 +14,7 @@ try {
     console.error(err)
   }
 
-//all sites in the DB table.......
+//Stations to json for mapping application
 app.get('/StationsMap/sites',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
@@ -41,6 +41,7 @@ app.get('/StationsMap/sites',function(req,res){
 	conn.end();
 });
 
+//Stations to tsv for download
 app.get('/Stations',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
@@ -78,6 +79,7 @@ app.get('/Stations',function(req,res){
     conn.end();
 });
 
+//Projects to tsv for download
 app.get('/Projects',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
@@ -107,6 +109,7 @@ app.get('/Projects',function(req,res){
     conn.end();
 });
 
+//Chem activities to tsv for download
 app.get('/ChemActivities:prj',function(req,res){
   var prj = req.params['prj']
 	var conn = mysql.createConnection(config);

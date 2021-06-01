@@ -18,7 +18,7 @@ body {
   .bg-light {
     background: rgba(247, 247, 247, 0.5) !important;
    }
-
+/*change font weight for all */
    .card-title{
      font-weight: 600;
    }
