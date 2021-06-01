@@ -17,6 +17,7 @@ requirements are inserted into the Chem Results table """
 parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
 parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+parser.add_argument('-d', '--db_scm', type=str, help='input database schema name')
 args = parser.parse_args()
 
 # build args into params...
@@ -27,6 +28,11 @@ else:
 
 if args.cf_dir is not None:
     cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_sm
 else:
     raise IOError
 
@@ -55,6 +61,7 @@ config_pw = config[1][1]
 
 # insert data from excel into table one line at a time.  generate an error rpt
 ftp = in_dir
+db = db_scm
 folder = 'Results/'
 type = 'Chem/'
 fdir = os.listdir(ftp + folder + type)
@@ -63,18 +70,19 @@ headerList = ['ActivityIdentifier',	'lab_accession', 'characteristic_name',	'val
               'analysis_start_date', 'Rslt_status', 'comment', 'methodSpeciationName', 'result_detection_condition',
               'sample_fraction', 'method_number', 'method_context', 'DetectionQuantitationTypeName',
               'MDL', 'DetectionQuantitationTypeNameUOM']
-SQLinsert = 'INSERT INTO awqx_test.resultschem (`ActivityIdentifier`,`LabAccession`,`CharacteristicName`,' \
+SQLinsert = 'INSERT INTO' + db + '.resultschem ' \
+            '(`ActivityIdentifier`,`LabAccession`,`CharacteristicName`,' \
             '`ResultMeasureValue`,`ResultMeasureUnitCode`,`ResultValueTypeName`,`AnalysisStartDate`,' \
             '`ResultStatusIdentifier`,`ResultComment`,`MethodSpeciationName`,`ResultDetectionConditionText`,' \
             '`ResultSampleFractionText`,`ResultAnalyticalMethodIdentifier`,' '`ResultAnalyticalMethodContext`,' \
             '`DetectionQuantitationTypeName`,`DetectionQuantitationLimitMeasureValue`,' \
             '`DetectionLimitMeasureUnitCode`,`createUser`,`createDate`,`lastUpdateUser`,`lastUpdateDate`) ' \
             'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-SQLselect = 'SELECT Name FROM awqx_test.methodspeciation;'
+SQLselect = 'SELECT Name FROM' + db + '.methodspeciation;'
 
-SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?);'
+SQLerrLog = 'INSERT INTO' + db + '.errlog VALUES (?,?,?,?,?,?);'
 
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+with msc.MYSQL('localhost', db , 3306, config_uid, config_pw) as dbo:
     select = dbo.query(SQLselect)
     print('found %s files to process: %s' % (len(fdir), fdir))
 
@@ -94,7 +102,7 @@ try:
         os.rename(fpathIn, fpathOut)
 
         if raw is not None and header == headerList:
-            with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+            with msc.MYSQL('localhost', db, 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.

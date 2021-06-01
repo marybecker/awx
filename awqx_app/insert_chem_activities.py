@@ -19,6 +19,7 @@ requirements are inserted into the Chem Activities table """
 parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
 parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+parser.add_argument('-d', '--db_scm', type=str, help='input database schema name')
 args = parser.parse_args()
 
 # build args into params...
@@ -29,6 +30,11 @@ else:
 
 if args.cf_dir is not None:
     cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_sm
 else:
     raise IOError
 
@@ -88,7 +94,7 @@ config_pw = config[1][1]
 
 # insert data from excel into table one line at a time.  generate an error rpt
 ftp = in_dir
-db = 'awqx'
+
 folder = 'Upload/'
 insert_type = 'Activities/'
 fdir = glob.glob(ftp+'**/'+folder+insert_type+'*ChemActivities*.xlsx')
