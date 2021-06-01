@@ -137,14 +137,14 @@ try:
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.
                 for i in range(len(raw)):
                     # generate auto populated fields for grab chemistry
-                    if len(raw[0][20]) == 0:
+                    if len(raw[i][20]) == 0:
                         Ylat = 0
                     else:
-                        Ylat = raw[0][20]
-                    if len(raw[0][21]) == 0:
+                        Ylat = raw[i][20]
+                    if len(raw[i][21]) == 0:
                         Xlong = 0
                     else:
-                        Xlong = raw[0][21]
+                        Xlong = raw[i][21]
                     actHorizCollectMethod = 'GPS-Unspecified'
                     actHorizDatum = 'NAD83'
                     actID = str(str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')

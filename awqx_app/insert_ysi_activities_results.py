@@ -82,8 +82,8 @@ with open(cf_dir, 'r') as f:
     s = f.read()
     f.close()
 config = [line.rsplit(',') for line in s.rsplit('\n')]  # chop up the text by the newline='\n and the delim
-config_uid = config[0][0]
-config_pw = config[1][0]
+config_uid = config[0][1]
+config_pw = config[1][1]
 
 # insert data from excel into table one line at a time.  generate an error rpt
 ftp = in_dir
