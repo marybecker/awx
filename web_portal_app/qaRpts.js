@@ -6,7 +6,7 @@ button.addEventListener("click",function(){
 });
 
 function bldHref (prjID){
-    var base = "http://localhost:8080/ChemActivities";
+    var base = "http://sdc-epafiling:8080/ChemActivities";
     var act = base + prjID;
     console.log(act);
     button.href = act

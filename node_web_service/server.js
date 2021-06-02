@@ -109,7 +109,7 @@ app.get('/Projects',function(req,res){
     conn.end();
 });
 
-//Chem activities to tsv for download
+//Chem activities to tsv for download.  Clean up using metadata queries in MySQL in the future and for future services.
 app.get('/ChemActivities:prj',function(req,res){
   var prj = req.params['prj']
 	var conn = mysql.createConnection(config);
@@ -217,7 +217,7 @@ app.get('/ChemActivities:prj',function(req,res){
 });
 
 //set routing pattern
-
 //listen on 8080
 //localhost:8080/sites
 app.listen(8080, () => console.log('Listening on port 8080!'))
+
