@@ -1,5 +1,5 @@
 import glob
-from awqx_app import mysql_connector as msc
+import mysql_connector as msc
 import xlrd
 from datetime import datetime
 import pytz
@@ -34,7 +34,7 @@ else:
     raise IOError
 
 if args.db_scm is not None:
-    db_scm = args.db_sm
+    db_scm = args.db_scm
 else:
     raise IOError
 
@@ -135,7 +135,7 @@ try:
         raw = readXlsx(fpath_in, db_err)
         header = raw[0]  # could use to check header names in the excel file
         raw = raw[1:]
-        # os.rename(fpath_in, fpath_out)
+        os.rename(fpath_in, fpath_out)
 
         if raw is not None and header == headerList:
             with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
