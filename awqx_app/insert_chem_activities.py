@@ -19,6 +19,7 @@ requirements are inserted into the Chem Activities table """
 parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
 parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+parser.add_argument('-d', '--db_scm', type=str, help='input database schema name')
 args = parser.parse_args()
 
 # build args into params...
@@ -29,6 +30,11 @@ else:
 
 if args.cf_dir is not None:
     cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_scm
 else:
     raise IOError
 
@@ -100,7 +106,7 @@ headerList = ['staSeq', 'ProjectIdentifier', 'ActivityTypeCode', 'ActivityStartD
               'ActivityConductingOrganizationText', 'ActivityCommentText', 'ActContactLead', 'ActFieldCrew',
               'ActivityYlat', 'ActivityXlong']
 
-SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
+SQLinsert = 'INSERT INTO ' + db_scm + '.activitychem (staSeq, ProjectIdentifier, ActivityTypeCode, ActivityStartDate, ' \
             'ActivityTime,SampleCollectionEquipmentCommentText, SampleCollectionMethodIdentifier, ' \
             'SamplePreparationMethodIdentifier,ActivityRelativeDepthName, ActivityTopDepthMeasureValue, ' \
             'ActivityTopDepthMeasureUnitCode, ActivityBottomDepthMeasureValue,' \
@@ -110,9 +116,9 @@ SQLinsert = 'INSERT INTO awqx_test.activitychem (staSeq, ProjectIdentifier, Acti
             'ActivityIdentifier, ActivityMediaName, ActivityMediaSubdivisionName, ActivityTimeZoneCodetimezone, ' \
             'SampleCollectionEquipmentName, createDate, createUser, lastUpdateDate, lastUpdateUser) ' \
             'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
+SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
 
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     print('found %s files to process: %s' % (len(fdir), fdir))
 
 try:
@@ -131,7 +137,7 @@ try:
         os.rename(fpath_in, fpath_out)
 
         if raw is not None and header == headerList:
-            with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+            with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.

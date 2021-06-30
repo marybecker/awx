@@ -18,6 +18,7 @@ requirements are inserted into the Stations table """
 parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
 parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+parser.add_argument('-d', '--db_scm', type=str, help='input database schema name')
 args = parser.parse_args()
 
 # build args into params...
@@ -28,6 +29,11 @@ else:
 
 if args.cf_dir is not None:
     cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_scm
 else:
     raise IOError
 
@@ -63,14 +69,15 @@ fdir = glob.glob(ftp + '**/' + folder + insert_type + '*Stations*.xlsx')
 headerList = ['locationName', 'locationDescription', 'locationType', 'ylat', 'xlong', 'sourceMapScale',
               'horizCollectMethod', 'horizRefDatum', 'stateCd', 'munName', 'subBasin', 'adbSegID', 'hydroID',
               'stationsCommentTxt']
-SQLinsert = 'INSERT INTO awqx_test.stations (staSeq,locationName, locationDescription, locationType, ylat, xlong, ' \
+SQLinsert = 'INSERT INTO ' + db_scm + '.stations' \
+            ' (staSeq,locationName, locationDescription, locationType, ylat, xlong, ' \
             'sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, ' \
             'adbSegID,hydroID,stationsCommentTxt, ' \
             'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
-SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
-SQLselect = 'SELECT Max(staSeq) + 1 FROM awqx_test.stations;'
+SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
+SQLselect = 'SELECT Max(staSeq) + 1 FROM' + db_scm + '.stations;'
 
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     res = dbo.query(SQLselect)
 
 print('found %s files to process: %s' % (len(fdir), fdir))
@@ -92,7 +99,7 @@ try:
         os.rename(fpath_in, fpath_out)
 
         if raw is not None and header == headerList:
-            with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+            with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
                 user_name = fpath_base.rsplit('\\')[-1]
 

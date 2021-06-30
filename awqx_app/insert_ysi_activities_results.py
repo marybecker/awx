@@ -19,6 +19,7 @@ requirements are inserted into the Field Meter Results table """
 parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
 parser.add_argument('-i', '--in_dir', type=str, help='input directory of ftp\t[None]')
 parser.add_argument('-c', '--cf_dir', type=str, help='input directory of config file')
+parser.add_argument('-d', '--db_scm', type=str, help='input database schema name')
 args = parser.parse_args()
 
 # build args into params...
@@ -29,6 +30,11 @@ else:
 
 if args.cf_dir is not None:
     cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_scm
 else:
     raise IOError
 
@@ -95,7 +101,7 @@ headerList = ['staSeq', 'ProjectIdentifier', 'ActivityStartDate', 'ActivityTime'
               'SampleCollectionMethod', 'ActivityDepthMeasureValue', 'ActivityDepthMeasureUnitCode',
               'ActivityCommentText', 'ActContactLead', 'ActivityYlat', 'ActivityXlong']
 
-SQLinsert = 'INSERT INTO awqx_test.resultsmeter (staSeq, ProjectIdentifier,  ' \
+SQLinsert = 'INSERT INTO ' + db_scm + '.resultsmeter (staSeq, ProjectIdentifier,  ' \
             'ActivityStartDate, ActivityTime, InstreamLocation, SampleCollectionMethodIdentifier,' \
             'ActivityDepthMeasureValue, ActivityDepthMeasureUnitCode, ActivityCommentText, ActContactLead, ' \
             'ResultMeasureValue, CharacteristicName, ResultMeasureUnitCode, ResultValueTypeName, ' \
@@ -106,17 +112,17 @@ SQLinsert = 'INSERT INTO awqx_test.resultsmeter (staSeq, ProjectIdentifier,  ' \
             'ActivityConductingOrganizationText, createDate, createUser, lastUpdateDate, lastUpdateUser)' \
             'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)'
 
-SQLerrLog = 'INSERT INTO awqx_test.errlog VALUES (?,?,?,?,?,?,?);'
+SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
 
 # Select lookup table parameters needed for YSI insert and format data for insert
-SQL_select_lookup = 'SELECT * FROM awqx_test.parameter_lookup WHERE parameter_lookup.LaboratoryName = "YSI";'
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+SQL_select_lookup = 'SELECT * FROM ' + db_scm + '.parameter_lookup WHERE parameter_lookup.LaboratoryName = "YSI";'
+with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     p_lu = dbo.query(SQL_select_lookup)
 
 p_name = [p_lu[i]['ProbeLabName'] for i in range(len(p_lu))]
 p_name_idx = {p_name[i]: i for i in range(len(p_name))}
 
-with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     print('found %s files to process: %s' % (len(fdir), fdir))
 
 try:
@@ -144,7 +150,7 @@ try:
             raw += [ysi_data[p][1:-1] + k_values]
 
         if raw is not None and header[1:13] == headerList:
-            with msc.MYSQL('localhost', 'awqx_test', 3306, config_uid, config_pw) as dbo:
+            with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
                 insDate = datetime.today().strftime('%Y-%m-%d %H:%M:%S')
 
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.
