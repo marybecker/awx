@@ -5,27 +5,38 @@ from datetime import datetime
 import unicodedata
 from awqx_app import mysql_connector as msc
 
-domain = ['Taxon']
+domain = ['FrequencyClassDescriptor']
 f_type = '_CSV.zip'
-uri = ('http://cdx.epa.gov/wqx/download/DomainValues/'+ domain[0] + f_type)
+uri = ('https://cdx.epa.gov/wqx/download/DomainValues/' + domain[0] + f_type)
 r = requests.get(uri)
 bytes = r.content
 
-delim  = '\t' #set you delimiter => CSV=','
-z      = zipfile.ZipFile(io.BytesIO(bytes))                  #setup an in memory zip decompressor
+delim = '\t'  # set you delimiter => CSV=','
+z = zipfile.ZipFile(io.BytesIO(bytes))  # setup an in memory zip decompressor
 # z      = zipfile.ZipFile('C:/Users/deepuser/Desktop/Taxon_CSV.zip') # use if having request issues above
-s      = z.read(z.infolist()[0]).decode()                    #read and decode the decompressed bytestring
-raw    = [line.rsplit(delim) for line in s.rsplit('\n')]     #chop up the text by the newline='\n and the delim
-header = [name.replace(' ','_').lower() for name in raw[0]]  #format the column names the way you want
-pos    = {header[i]:i for i in range(len(header))}           #setup column names for convience
-data   = raw[1:]                                             #slice off the data for access
+s = z.read(z.infolist()[0]).decode()  # read and decode the decompressed bytestring
+raw = [line.rsplit(delim) for line in s.rsplit('\n')]  # chop up the text by the newline='\n and the delim
+header = [name.replace(' ', '_').lower() for name in raw[0]]  # format the column names the way you want
+pos = {header[i]: i for i in range(len(header))}  # setup column names for convience
+data = raw[1:]  # slice off the data for access
 
 
-#Write out csv
-def write_delim(list_name,out_loc,delim):
-    s = '\n'.join([delim.join([str(e) for e in row])for row in list_name])
+# Write out csv
+def write_delim(list_name, out_loc, delim):
+    s = '\n'.join([delim.join([str(e) for e in row]) for row in list_name])
     with open(out_loc, 'w') as f:
         f.write(s)
+
+def format_date(d,l_len, name_p, date_p):
+    for i in range(len(d)):
+        if len(d[i]) == l_len:
+            d[i][name_p] = d[i][name_p].replace('","', '')
+            d[i][name_p] = d[i][name_p].replace(',"', '')
+            date_str = d[i][date_p]
+            date_strp = datetime.strptime(date_str, '%m/%d/%Y %I:%M:%S %p')
+            d[i][date_p] = date_strp.strftime('%Y-%m-%d %H:%M:%S')
+            d[i] += [datetime.today().strftime('%Y-%m-%d %H:%M:%S')]
+
 # zf = zipfile.ZipFile(r.text)
 #
 #
@@ -33,14 +44,36 @@ def write_delim(list_name,out_loc,delim):
 # root = tree.getroot()
 # xmldict =
 
-#######FOR TAXON DATA ONLY ####################################
-#Manipulate and Cleanup Taxon Data - Tab and Comma Delimited
+
+# Manipulate and Cleanup Domain Data - Tab and Comma Delimited
 d_update = []
 
 for i in range(len(data)):
     u = []
     for j in range(len(data[i])):
-        if len(data[i][j])>0 and data[i][j][-1] == ',':
+        if len(data[i][j]) > 0 and data[i][j][-1] == ',':
+            u += [data[i][j][:-1]]
+            # u += [unicodedata.normalize("NFKD",data[i][j][:-1])]
+        else:
+            u += [data[i][j]]
+    d_update += [u]
+
+format_date(d_update,6,3,5)
+
+# Append header
+for i in range(len(header)-1):
+    header[i] = header[i][:-1] #remove comma from header
+
+d_header = header + ['lastUpdateDate']
+d = [d_header] + d_update
+
+#######FOR TAXON DATA ONLY ####################################
+d_update = []
+
+for i in range(len(data)):
+    u = []
+    for j in range(len(data[i])):
+        if len(data[i][j]) > 0 and data[i][j][-1] == ',':
             u += [data[i][j][:-1]]
             # u += [unicodedata.normalize("NFKD",data[i][j][:-1])]
         else:
@@ -62,7 +95,7 @@ for i in range(len(d)):
         d[i] += [datetime.today().strftime('%Y-%m-%d %H:%M:%S')]
 
 # Append header
-for i in range(0,9):
+for i in range(0, 9):
     header[i] = header[i][:-1]
 
 d_header = header[0:5] + ['lastUpdateDate']
@@ -82,7 +115,7 @@ d = [d_header] + d
 # r = re.sub(r'[^\x00-\x7f]',' ',t)
 # s==r
 #
-# ##Identifies any taxon 'name' values with extra characters
+##Identifies any taxon 'name' values with extra characters
 # char_issues = []
 # for i in range(len(d)):
 #     if len(d[i]) == 6 and '\xa0' in d[i][2]:
@@ -110,18 +143,23 @@ folder = 'Upload/'
 insert_type = 'Domain/'
 db_scm = 'awqx'
 
+# headerList = ['domain', 'unique_identifier', 'name', 'rank', 'last_change_date', 'lastUpdateDate']
+# SQLinsert = 'INSERT INTO ' + db_scm + '.taxon (`domain`, `unique_identifier`, `name`, `rank`, ' \
+#                                       '`last_change_date`, `lastUpdateDate`) ' \
+#                                       'VALUES (?,?,?,?,?,?);'
+# SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
+# file_name = 'Taxon_Domain'
 
-headerList = ['domain', 'unique_identifier', 'name', 'rank', 'last_change_date', 'lastUpdateDate']
-SQLinsert = 'INSERT INTO ' + db_scm + '.taxon (`domain`, `unique_identifier`, `name`, `rank`, ' \
-                                      '`last_change_date`, `lastUpdateDate`) '\
-            'VALUES (?,?,?,?,?,?);'
+headerList = ['domain', 'unique_identifier', 'type','name', 'description', 'last_change_date', 'lastUpdateDate']
+SQLinsert = 'INSERT INTO ' + db_scm + '.frequencyclassdescriptor (`domain`, `unique_identifier`,' \
+                                      '`type`, `name`, `description`, `last_change_date`, `lastUpdateDate`) ' \
+                                      'VALUES (?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
-
+file_name = 'frequencyclassdescriptor'
 
 db_err = []
 uploadDate = datetime.today().strftime('%m%d%Y_%H%M%S_')
 fpath_base = ftp
-file_name = 'Taxon_Domain'
 fpath_err = fpath_base + '\\ErrRpts\\' + uploadDate + file_name + 'QcRpt.txt'
 delim = '\t'
 raw = d
