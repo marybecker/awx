@@ -197,3 +197,24 @@ else:
     s = '\n'.join([delim.join([str(e) for e in row]) for row in db_err])
     with open(fpath_err, 'w') as f:
         f.write(s)
+
+
+# FOR FUTURE INSERTS - GET TABLE FIELD NAMES TO CREATE SELECT OR INSERT QUERIES
+
+sql_table = 'desc awqx.stations;'
+
+with msc.MYSQL('localhost', 'awqx', 3306, 'pyuser', 'test') as dbo:
+    t = dbo.query(sql_table)
+
+fields = []
+
+for i in range(len(t)):
+    fields += [t[i]['Field']]
+
+sel_fields = ','.join(field for field in fields)
+
+sql_select = 'SELECT ' + sel_fields + ' FROM awqx.stations';
+
+with msc.MYSQL('localhost', 'awqx', 3306, config_uid, config_pw) as dbo:
+    s = dbo.query(sql_select)
+
