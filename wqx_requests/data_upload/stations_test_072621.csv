@@ -1,0 +1,11 @@
+staSeq,locationName,ylat,xlong,sourceMapScale,horizCollectMethod,horizRefDatum,locationType
+14261_CTDEEP,"Kahn Brook",41.579100,-72.166100,24000,Interpolation-Map,NAD83,River/Stream
+14263_CTDEEP,"Kahn Brook",41.568100,-72.170200,24000,GPS-Unspecified,NAD83,River/Stream
+15301_CTDEEP,"Eagleville Brook",41.806700,-72.264600,24000,Interpolation-Map,NAD83,River/Stream
+15304_CTDEEP,"Eagleville Brook",41.793800,-72.275200,24000,Unknown,NAD83,River/Stream
+15783_CTDEEP,"Eagleville Brook",41.788200,-72.277600,24000,Interpolation-Map,NAD83,River/Stream
+16062_CTDEEP,"Mill Brook",41.858400,-72.657700,24000,Unknown,NAD83,River/Stream
+16109_CTDEEP,"Gardner Brook",41.864200,-72.159800,24000,GPS-Unspecified,NAD83,River/Stream
+16788_CTDEEP,"KEELER BROOK",41.092000,-73.439700,24000,Unknown,NAD83,River/Stream
+17345_CTDEEP,"Bebbington Brook",41.846500,-72.163900,24000,Interpolation-Map,NAD83,River/Stream
+20191_CTDEEP,"Grants Brook",41.828580,-72.167500,0,Interpolation-Satellite,WGS84,River/Stream

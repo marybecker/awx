@@ -38,14 +38,6 @@ if args.db_scm is not None:
 else:
     raise IOError
 
-#######FOR TEST - DELETE ###########
-in_dir = 'C:/Users/deepuser/Documents/testFTP/'
-cf_dir = 'C:/Users/deepuser/Documents/cnf/user.cnf.txt'
-db_scm = 'awqx'
-
-
-
-
 # function to read in xlsx file
 def readXlsx(file, errFile):
     if file.endswith(".xlsm") or file.endswith(".xlsx"):
