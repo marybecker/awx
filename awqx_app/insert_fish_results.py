@@ -43,7 +43,7 @@ def readXlsx(file, errFile):
         try:
             with xlrd.open_workbook(file) as f:
                 sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
-                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:6]] for r in range(sheet.nrows)[0:]]
+                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:7]] for r in range(sheet.nrows)[0:]]
                 return raw
         except FileNotFoundError as e:
             print(e)
@@ -65,16 +65,16 @@ folder = 'Upload/'
 insert_type = 'Results/'
 fdir = glob.glob(ftp + '**/' + folder + insert_type + '*FishResults*.xlsx')
 
-headerList = ['ActivityIdentifier', 'Taxon_Name', 'Count', 'Length_Unit', 'Length_Lower', 'ResultComment']
+headerList = ['ActivityIdentifier', 'Taxon_Name', 'IsStocked', 'Count',  'Length_Unit', 'Length', 'ResultComment']
 
 SQLinsert = 'INSERT INTO ' + db_scm + '.resultsfish ' \
-                                  '(ActivityIdentifier , SubjectTaxonomicName,  ResultMeasureValue, ' \
+                                  '(ActivityIdentifier , SubjectTaxonomicName,  IsStocked, ResultMeasureValue,' \
                                       'FrequencyClassDescriptorUnitCode,LowerClassBoundValue, ResultComment,' \
                                       'CharacteristicName, ResultMeasureUnitCode,ResultValueTypeName,  ' \
                                       'BiologicalIntentName, FrequencyClassDescriptorCode,UpperClassBoundValue,' \
                                       'ResultStatusIdentifier, ' \
                                       'createDate, createUser, lastUpdateDate, lastUpdateUser) ' \
-                                  'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+                                  'VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
 
 print('found %s files to process: %s' % (len(fdir), fdir))
