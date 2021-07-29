@@ -92,7 +92,7 @@ try:
         raw = readXlsx(fpath_in, db_err)
         header = raw[0]  # could use to check header names in the excel file
         raw = raw[1:]
-        #os.rename(fpath_in, fpath_out)
+        os.rename(fpath_in, fpath_out)
 
         if raw is not None and header == headerList:
             with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
