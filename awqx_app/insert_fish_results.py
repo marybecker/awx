@@ -1,6 +1,5 @@
-from awqx_app import mysql_connector as msc
 import glob
-#import mysql_connector as msc
+import mysql_connector as msc
 import xlrd
 from datetime import datetime
 import os

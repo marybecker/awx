@@ -18,7 +18,7 @@ try {
 app.get('/StationsMap/sites',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
-	var SQL = 'SELECT  staSeq,locationName, locationDescription, locationType, ylat, xlong, sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, adbSegID, createUser, UNIX_TIMESTAMP(createDate) as createDate FROM awqx_test.stations;';
+	var SQL = 'SELECT  staSeq,locationName, locationDescription, locationType, ylat, xlong, sourceMapScale, horizCollectMethod, horizRefDatum, stateCd, munName, subBasin, adbSegID, createUser, UNIX_TIMESTAMP(createDate) as createDate FROM awqx.stations;';
 	console.log(SQL);
 	conn.query(SQL,function(err,response,fields){
 		if(err){ throw err; }
@@ -45,7 +45,7 @@ app.get('/StationsMap/sites',function(req,res){
 app.get('/Stations',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
-    var SQL = 'SELECT * FROM awqx_test.stations;';
+    var SQL = 'SELECT * FROM awqx.stations;';
 	console.log(SQL);
 	conn.query(SQL,function(err,response,fields){
 		if(err){ throw err; }
@@ -83,7 +83,7 @@ app.get('/Stations',function(req,res){
 app.get('/Projects',function(req,res){
 	var conn = mysql.createConnection(config);
 	conn.connect();
-    var SQL = 'SELECT * FROM awqx_test.projects;';
+    var SQL = 'SELECT * FROM awqx.projects;';
 	console.log(SQL);
 	conn.query(SQL,function(err,response,fields){
 		if(err){ throw err; }
@@ -114,7 +114,7 @@ app.get('/ChemActivities:prj',function(req,res){
   var prj = req.params['prj']
 	var conn = mysql.createConnection(config);
 	conn.connect();
-    var SQL = 'SELECT * FROM awqx_test.activitychem WHERE ProjectIdentifier ="' + prj + '";';
+    var SQL = 'SELECT * FROM awqx.activitychem WHERE ProjectIdentifier ="' + prj + '";';
 	console.log(SQL);
 	conn.query(SQL,function(err,response,fields){
 		if(err){ throw err; }
