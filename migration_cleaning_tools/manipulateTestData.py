@@ -1,6 +1,7 @@
 # Import modules
 import pandas as pd
 from awqx_app import mysql_connector as msc
+import xlrd
 
 #read in config file
 cdir = ''
@@ -119,3 +120,32 @@ users_crosswalk.to_excel('awqx_app/testData/usersCrosswalk.xlsx')
 current_create_users = pd.DataFrame(stations['createUser'].unique())
 
 current_create_users.to_excel('awqx_app/testData/createUsers.xlsx')
+
+## Import parameter lookup
+SQLinsert = 'INSERT INTO `awqx`.`parameter_lookup`(`ProbeLabName`,`LaboratoryName`,`Probe`,`CharacteristicName`,`' \
+            'ResultMeasureUnitCode`,`ResultValueTypeName`,`SampleCollectionEquipmentCommentText`,' \
+            '`createDate`,`createUser`,`lastUpdateDate`,`lastUpdateUser`,`MethodSpeciationName`,`SampleFractionName`,' \
+            '`AnalyticalMethodID`,`AnalyticalMethodContextCode`,`SamplingType`)' \
+            'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+
+file = 'C:/Users/deepuser/Documents/Projects/wqDB_docs/CESE_CrossWalkTable_081021.xlsx'
+with xlrd.open_workbook(file) as f:
+    sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
+    raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:]] for r in range(sheet.nrows)[0:]]
+
+raw = raw[1:]
+
+## Update Blank values to 'None' to insert NULL values into the database
+for i in range(len(raw)):
+    for j in range(len(raw[i])):
+        if type(raw[i][j]) == str and len(raw[i][j]) == 0:
+            raw[i][j] = None
+
+for i in range(len(raw)):
+    with msc.MYSQL('localhost', 'awqx', 3306, config_uid, config_pw) as dbo:
+    ins = dbo.query(SQLinsert, raw[i])
+    if ins != {}:
+        print('error with on row %s, err=%s' % (i, ins[sorted(ins)[0]]))
+    else:
+        print('success with file %s on row %s' % (file, i))
+
