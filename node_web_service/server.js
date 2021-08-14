@@ -217,7 +217,7 @@ app.get('/ChemActivities:prj',function(req,res){
 });
 
 //Bio activities to tsv for download. 
-app.get('/BioActivities/:prj',function(req,res){
+app.get('/BioActivities:prj',function(req,res){
   var prj = req.params['prj']
     var conn = mysql.createConnection(config);
     conn.connect();
@@ -228,6 +228,7 @@ app.get('/BioActivities/:prj',function(req,res){
         console.log(response);
         var features = [];
       for (var i = 0; i<response.length; i++){
+        //loop over the columns...
         var point = [
             response[i].ProjectIdentifier.toString(),
             response[i].staSeq.toString(),
