@@ -246,8 +246,6 @@ app.get('/BioActivities:prj',function(req,res){
             response[i].ActContactLead.toString(),
             response[i].ActFieldCrew.toString(),
             response[i].AssemblageSampledName.toString(),
-            response[i].CollectionAreaMeasureValue.toString(),
-            response[i].CollectionAreaMeasureUnitCode.toString(),
             response[i].HabitatSelectionMethod.toString(),
             response[i].CollectionDurationMeasureValue.toString(),
             response[i].CollectionDurationMeasureUnitCode.toString(),
@@ -255,8 +253,6 @@ app.get('/BioActivities:prj',function(req,res){
             response[i].ReachLengthMeasureUnitCode.toString(),
             response[i].ReachWidthMeasureValue.toString(),
             response[i].ReachWidthMeasureUnitCode.toString(),
-            response[i].NetMeshSizeMeasureValue.toString(),
-            response[i].NetMeshSizeMeasureUnitCode.toString(),
             response[i].PassCount.toString(),
             response[i].Amps.toString(),
             response[i].Pulses.toString(),
@@ -292,8 +288,6 @@ app.get('/BioActivities:prj',function(req,res){
     "ActivityCommentText"+ delim +
     "ActContactLead"+ delim +"ActFieldCrew"+ delim +
     "AssemblageSampledName"+ delim +
-    "CollectionAreaMeasureValue"+ delim +
-    "CollectionAreaMeasureUnitCode"+ delim +
     "HabitatSelectionMethod"+ delim +
     "CollectionDurationMeasureValue"+ delim +
     "CollectionDurationMeasureUnitCode"+ delim +
@@ -301,8 +295,6 @@ app.get('/BioActivities:prj',function(req,res){
     "ReachLengthMeasureUnitCode"+ delim +
     "ReachWidthMeasureValue"+ delim +
     "ReachWidthMeasureUnitCode"+ delim +
-    "NetMeshSizeMeasureValue"+ delim +
-    "NetMeshSizeMeasureUnitCode"+ delim +
     "PassCount"+ delim +"Amps"+ delim +
     "Pulses"+ delim +
     "CollectionEfficiencyEst"+ delim +
@@ -332,29 +324,25 @@ app.get('/BioActivities:prj',function(req,res){
       var ActContactLead= features[i][13].toString()
       var ActFieldCrew= features[i][14].toString()
       var AssemblageSampledName= features[i][15].toString()
-      var CollectionAreaMeasureValue= features[i][16].toString()
-      var CollectionAreaMeasureUnitCode= features[i][17].toString()
-      var HabitatSelectionMethod= features[i][18].toString()
-      var CollectionDurationMeasureValue= features[i][19].toString()
-      var CollectionDurationMeasureUnitCode= features[i][20].toString()
-      var ReachLengthMeasureValue= features[i][21].toString()
-      var ReachLengthMeasureUnitCode= features[i][22].toString()
-      var ReachWidthMeasureValue= features[i][23].toString()
-      var ReachWidthMeasureUnitCode= features[i][24].toString()
-      var NetMeshSizeMeasureValue= features[i][25].toString()
-      var NetMeshSizeMeasureUnitCode= features[i][26].toString()
-      var PassCount= features[i][27].toString()
-      var Amps= features[i][28].toString()
-      var Pulses= features[i][29].toString()
-      var CollectionEfficiencyEst= features[i][30].toString()
-      var TotalEnergizedMeasure= features[i][31].toString()
-      var TotalEnergizedMeasureUnit= features[i][32].toString()
-      var Volts= features[i][33].toString()
-      var DutyCycle= features[i][34].toString()
-      var createDate= features[i][35].toString()
-      var createUser= features[i][36].toString()
-      var lastUpdateDate= features[i][37].toString()
-      var lastUpdateUser= features[i][38].toString()
+      var HabitatSelectionMethod= features[i][16].toString()
+      var CollectionDurationMeasureValue= features[i][17].toString()
+      var CollectionDurationMeasureUnitCode= features[i][18].toString()
+      var ReachLengthMeasureValue= features[i][19].toString()
+      var ReachLengthMeasureUnitCode= features[i][20].toString()
+      var ReachWidthMeasureValue= features[i][21].toString()
+      var ReachWidthMeasureUnitCode= features[i][22].toString()
+      var PassCount= features[i][23].toString()
+      var Amps= features[i][24].toString()
+      var Pulses= features[i][25].toString()
+      var CollectionEfficiencyEst= features[i][26].toString()
+      var TotalEnergizedMeasure= features[i][27].toString()
+      var TotalEnergizedMeasureUnit= features[i][28].toString()
+      var Volts= features[i][29].toString()
+      var DutyCycle= features[i][30].toString()
+      var createDate= features[i][31].toString()
+      var createUser= features[i][32].toString()
+      var lastUpdateDate= features[i][33].toString()
+      var lastUpdateUser= features[i][34].toString()
 
       s += 
       ProjectIdentifier+ delim +
@@ -373,8 +361,6 @@ app.get('/BioActivities:prj',function(req,res){
       ActContactLead+ delim +
       ActFieldCrew+ delim +
       AssemblageSampledName+ delim +
-      CollectionAreaMeasureValue+ delim +
-      CollectionAreaMeasureUnitCode+ delim +
       HabitatSelectionMethod+ delim +
       CollectionDurationMeasureValue+ delim +
       CollectionDurationMeasureUnitCode+ delim +
@@ -382,8 +368,6 @@ app.get('/BioActivities:prj',function(req,res){
       ReachLengthMeasureUnitCode+ delim +
       ReachWidthMeasureValue+ delim +
       ReachWidthMeasureUnitCode+ delim +
-      NetMeshSizeMeasureValue+ delim +
-      NetMeshSizeMeasureUnitCode+ delim +
       PassCount+ delim +
       Amps+ delim +
       Pulses+ delim +
@@ -631,173 +615,157 @@ app.get('/BioActivities_TEST/:prj',function(req,res){
         var features = [];
       for (var i = 0; i<response.length; i++){
         var point = [
-            response[i].ProjectIdentifier.toString(),
-            response[i].staSeq.toString(),
-            response[i].ActivityIdentifier.toString(),
-            response[i].ActivityTypeCode.toString(),
-            response[i].ActivityMediaName.toString(),
-            response[i].ActivityStartDate.toISOString().substring(0,10),
-            response[i].ActivityTime.toString(),
-            response[i].ActivityTimeZoneCodetimezone.toString(),
-            response[i].SampleCollectionMethodIdentifier.toString(),
-            response[i].SampleCollectionEquipmentName.toString(),
-            response[i].SampleCollectionEquipmentCommentText.toString(),
-            response[i].ActivityConductingOrganizationText.toString(),
-            response[i].ActivityCommentText.toString(),
-            response[i].ActContactLead.toString(),
-            response[i].ActFieldCrew.toString(),
-            response[i].AssemblageSampledName.toString(),
-            response[i].CollectionAreaMeasureValue.toString(),
-            response[i].CollectionAreaMeasureUnitCode.toString(),
-            response[i].HabitatSelectionMethod.toString(),
-            response[i].CollectionDurationMeasureValue.toString(),
-            response[i].CollectionDurationMeasureUnitCode.toString(),
-            response[i].ReachLengthMeasureValue.toString(),
-            response[i].ReachLengthMeasureUnitCode.toString(),
-            response[i].ReachWidthMeasureValue.toString(),
-            response[i].ReachWidthMeasureUnitCode.toString(),
-            response[i].NetMeshSizeMeasureValue.toString(),
-            response[i].NetMeshSizeMeasureUnitCode.toString(),
-            response[i].PassCount.toString(),
-            response[i].Amps.toString(),
-            response[i].Pulses.toString(),
-            response[i].CollectionEfficiencyEst.toString(),
-            response[i].TotalEnergizedMeasure.toString(),
-            response[i].TotalEnergizedMeasureUnit.toString(),
-            response[i].Volts.toString(),
-            response[i].DutyCycle.toString(),
-            response[i].createDate.toISOString().substring(0,10),
-            response[i].createUser.toString(),
-            response[i].lastUpdateDate.toISOString().substring(0,10),
-            response[i].lastUpdateUser.toString()
-      ]
-        features.push(point);
-      }
-      
-      console.log(features);
+          response[i].ProjectIdentifier.toString(),
+          response[i].staSeq.toString(),
+          response[i].ActivityIdentifier.toString(),
+          response[i].ActivityTypeCode.toString(),
+          response[i].ActivityMediaName.toString(),
+          response[i].ActivityStartDate.toISOString().substring(0,10),
+          response[i].ActivityTime.toString(),
+          response[i].ActivityTimeZoneCodetimezone.toString(),
+          response[i].SampleCollectionMethodIdentifier.toString(),
+          response[i].SampleCollectionEquipmentName.toString(),
+          response[i].SampleCollectionEquipmentCommentText.toString(),
+          response[i].ActivityConductingOrganizationText.toString(),
+          response[i].ActivityCommentText.toString(),
+          response[i].ActContactLead.toString(),
+          response[i].ActFieldCrew.toString(),
+          response[i].AssemblageSampledName.toString(),
+          response[i].HabitatSelectionMethod.toString(),
+          response[i].CollectionDurationMeasureValue.toString(),
+          response[i].CollectionDurationMeasureUnitCode.toString(),
+          response[i].ReachLengthMeasureValue.toString(),
+          response[i].ReachLengthMeasureUnitCode.toString(),
+          response[i].ReachWidthMeasureValue.toString(),
+          response[i].ReachWidthMeasureUnitCode.toString(),
+          response[i].PassCount.toString(),
+          response[i].Amps.toString(),
+          response[i].Pulses.toString(),
+          response[i].CollectionEfficiencyEst.toString(),
+          response[i].TotalEnergizedMeasure.toString(),
+          response[i].TotalEnergizedMeasureUnit.toString(),
+          response[i].Volts.toString(),
+          response[i].DutyCycle.toString(),
+          response[i].createDate.toISOString().substring(0,10),
+          response[i].createUser.toString(),
+          response[i].lastUpdateDate.toISOString().substring(0,10),
+          response[i].lastUpdateUser.toString()
+    ]
+      features.push(point);
+    }
+    
+    console.log(features);
 
-    var delim = '\t';
-    var s = 
-    "ProjectIdentifier"+ delim +
-    "staSeq"+ delim +
-    "ActivityIdentifier"+ delim +
-    "ActivityTypeCode"+ delim +
-    "ActivityMediaName"+ delim +
-    "ActivityStartDate"+ delim +
-    "ActivityTime"+ delim +
-    "ActivityTimeZoneCodetimezone"+ delim +
-    "SampleCollectionMethodIdentifier"+ delim +
-    "SampleCollectionEquipmentName"+ delim +
-    "SampleCollectionEquipmentCommentText"+ delim +
-    "ActivityConductingOrganizationText"+ delim +
-    "ActivityCommentText"+ delim +
-    "ActContactLead"+ delim +"ActFieldCrew"+ delim +
-    "AssemblageSampledName"+ delim +
-    "CollectionAreaMeasureValue"+ delim +
-    "CollectionAreaMeasureUnitCode"+ delim +
-    "HabitatSelectionMethod"+ delim +
-    "CollectionDurationMeasureValue"+ delim +
-    "CollectionDurationMeasureUnitCode"+ delim +
-    "ReachLengthMeasureValue"+ delim +
-    "ReachLengthMeasureUnitCode"+ delim +
-    "ReachWidthMeasureValue"+ delim +
-    "ReachWidthMeasureUnitCode"+ delim +
-    "NetMeshSizeMeasureValue"+ delim +
-    "NetMeshSizeMeasureUnitCode"+ delim +
-    "PassCount"+ delim +"Amps"+ delim +
-    "Pulses"+ delim +
-    "CollectionEfficiencyEst"+ delim +
-    "TotalEnergizedMeasure"+ delim +
-    "TotalEnergizedMeasureUnit"+ delim +
-    "Volts"+ delim +
-    "DutyCycle"+ delim +
-    "createDate"+ delim +
-    "createUser"+ delim +
-    "lastUpdateDate"+ delim +
-    "lastUpdateUser\n";   //header line
+  var delim = '\t';
+  var s = 
+  "ProjectIdentifier"+ delim +
+  "staSeq"+ delim +
+  "ActivityIdentifier"+ delim +
+  "ActivityTypeCode"+ delim +
+  "ActivityMediaName"+ delim +
+  "ActivityStartDate"+ delim +
+  "ActivityTime"+ delim +
+  "ActivityTimeZoneCodetimezone"+ delim +
+  "SampleCollectionMethodIdentifier"+ delim +
+  "SampleCollectionEquipmentName"+ delim +
+  "SampleCollectionEquipmentCommentText"+ delim +
+  "ActivityConductingOrganizationText"+ delim +
+  "ActivityCommentText"+ delim +
+  "ActContactLead"+ delim +"ActFieldCrew"+ delim +
+  "AssemblageSampledName"+ delim +
+  "HabitatSelectionMethod"+ delim +
+  "CollectionDurationMeasureValue"+ delim +
+  "CollectionDurationMeasureUnitCode"+ delim +
+  "ReachLengthMeasureValue"+ delim +
+  "ReachLengthMeasureUnitCode"+ delim +
+  "ReachWidthMeasureValue"+ delim +
+  "ReachWidthMeasureUnitCode"+ delim +
+  "PassCount"+ delim +"Amps"+ delim +
+  "Pulses"+ delim +
+  "CollectionEfficiencyEst"+ delim +
+  "TotalEnergizedMeasure"+ delim +
+  "TotalEnergizedMeasureUnit"+ delim +
+  "Volts"+ delim +
+  "DutyCycle"+ delim +
+  "createDate"+ delim +
+  "createUser"+ delim +
+  "lastUpdateDate"+ delim +
+  "lastUpdateUser\n";   //header line
 
-    for(var i=0; i<features.length; i++){  //convert each row of data to string
-      var ProjectIdentifier= features[i][0].toString()
-      var staSeq= features[i][1].toString()
-      var ActivityIdentifier= features[i][2].toString()
-      var ActivityTypeCode= features[i][3].toString()
-      var ActivityMediaName= features[i][4].toString()
-      var ActivityStartDate= features[i][5].toString()
-      var ActivityTime= features[i][6].toString()
-      var ActivityTimeZoneCodetimezone= features[i][7].toString()
-      var SampleCollectionMethodIdentifier= features[i][8].toString()
-      var SampleCollectionEquipmentName= features[i][9].toString()
-      var SampleCollectionEquipmentCommentText= features[i][10].toString()
-      var ActivityConductingOrganizationText= features[i][11].toString()
-      var ActivityCommentText= features[i][12].toString()
-      var ActContactLead= features[i][13].toString()
-      var ActFieldCrew= features[i][14].toString()
-      var AssemblageSampledName= features[i][15].toString()
-      var CollectionAreaMeasureValue= features[i][16].toString()
-      var CollectionAreaMeasureUnitCode= features[i][17].toString()
-      var HabitatSelectionMethod= features[i][18].toString()
-      var CollectionDurationMeasureValue= features[i][19].toString()
-      var CollectionDurationMeasureUnitCode= features[i][20].toString()
-      var ReachLengthMeasureValue= features[i][21].toString()
-      var ReachLengthMeasureUnitCode= features[i][22].toString()
-      var ReachWidthMeasureValue= features[i][23].toString()
-      var ReachWidthMeasureUnitCode= features[i][24].toString()
-      var NetMeshSizeMeasureValue= features[i][25].toString()
-      var NetMeshSizeMeasureUnitCode= features[i][26].toString()
-      var PassCount= features[i][27].toString()
-      var Amps= features[i][28].toString()
-      var Pulses= features[i][29].toString()
-      var CollectionEfficiencyEst= features[i][30].toString()
-      var TotalEnergizedMeasure= features[i][31].toString()
-      var TotalEnergizedMeasureUnit= features[i][32].toString()
-      var Volts= features[i][33].toString()
-      var DutyCycle= features[i][34].toString()
-      var createDate= features[i][35].toString()
-      var createUser= features[i][36].toString()
-      var lastUpdateDate= features[i][37].toString()
-      var lastUpdateUser= features[i][38].toString()
+  for(var i=0; i<features.length; i++){  //convert each row of data to string
+    var ProjectIdentifier= features[i][0].toString()
+    var staSeq= features[i][1].toString()
+    var ActivityIdentifier= features[i][2].toString()
+    var ActivityTypeCode= features[i][3].toString()
+    var ActivityMediaName= features[i][4].toString()
+    var ActivityStartDate= features[i][5].toString()
+    var ActivityTime= features[i][6].toString()
+    var ActivityTimeZoneCodetimezone= features[i][7].toString()
+    var SampleCollectionMethodIdentifier= features[i][8].toString()
+    var SampleCollectionEquipmentName= features[i][9].toString()
+    var SampleCollectionEquipmentCommentText= features[i][10].toString()
+    var ActivityConductingOrganizationText= features[i][11].toString()
+    var ActivityCommentText= features[i][12].toString()
+    var ActContactLead= features[i][13].toString()
+    var ActFieldCrew= features[i][14].toString()
+    var AssemblageSampledName= features[i][15].toString()
+    var HabitatSelectionMethod= features[i][16].toString()
+    var CollectionDurationMeasureValue= features[i][17].toString()
+    var CollectionDurationMeasureUnitCode= features[i][18].toString()
+    var ReachLengthMeasureValue= features[i][19].toString()
+    var ReachLengthMeasureUnitCode= features[i][20].toString()
+    var ReachWidthMeasureValue= features[i][21].toString()
+    var ReachWidthMeasureUnitCode= features[i][22].toString()
+    var PassCount= features[i][23].toString()
+    var Amps= features[i][24].toString()
+    var Pulses= features[i][25].toString()
+    var CollectionEfficiencyEst= features[i][26].toString()
+    var TotalEnergizedMeasure= features[i][27].toString()
+    var TotalEnergizedMeasureUnit= features[i][28].toString()
+    var Volts= features[i][29].toString()
+    var DutyCycle= features[i][30].toString()
+    var createDate= features[i][31].toString()
+    var createUser= features[i][32].toString()
+    var lastUpdateDate= features[i][33].toString()
+    var lastUpdateUser= features[i][34].toString()
 
-      s += 
-      ProjectIdentifier+ delim +
-      staSeq+ delim +
-      ActivityIdentifier+ delim +
-      ActivityTypeCode+ delim +
-      ActivityMediaName+ delim +
-      ActivityStartDate+ delim +
-      ActivityTime+ delim +
-      ActivityTimeZoneCodetimezone+ delim +
-      SampleCollectionMethodIdentifier+ delim +
-      SampleCollectionEquipmentName+ delim +
-      SampleCollectionEquipmentCommentText+ delim +
-      ActivityConductingOrganizationText+ delim +
-      ActivityCommentText+ delim +
-      ActContactLead+ delim +
-      ActFieldCrew+ delim +
-      AssemblageSampledName+ delim +
-      CollectionAreaMeasureValue+ delim +
-      CollectionAreaMeasureUnitCode+ delim +
-      HabitatSelectionMethod+ delim +
-      CollectionDurationMeasureValue+ delim +
-      CollectionDurationMeasureUnitCode+ delim +
-      ReachLengthMeasureValue+ delim +
-      ReachLengthMeasureUnitCode+ delim +
-      ReachWidthMeasureValue+ delim +
-      ReachWidthMeasureUnitCode+ delim +
-      NetMeshSizeMeasureValue+ delim +
-      NetMeshSizeMeasureUnitCode+ delim +
-      PassCount+ delim +
-      Amps+ delim +
-      Pulses+ delim +
-      CollectionEfficiencyEst+ delim +
-      TotalEnergizedMeasure+ delim +
-      TotalEnergizedMeasureUnit+ delim +
-      Volts+ delim +
-      DutyCycle+ delim +
-      createDate+ delim +
-      createUser+ delim +
-      lastUpdateDate+ delim +
-      lastUpdateUser+ delim
-      +'\n';
+    s += 
+    ProjectIdentifier+ delim +
+    staSeq+ delim +
+    ActivityIdentifier+ delim +
+    ActivityTypeCode+ delim +
+    ActivityMediaName+ delim +
+    ActivityStartDate+ delim +
+    ActivityTime+ delim +
+    ActivityTimeZoneCodetimezone+ delim +
+    SampleCollectionMethodIdentifier+ delim +
+    SampleCollectionEquipmentName+ delim +
+    SampleCollectionEquipmentCommentText+ delim +
+    ActivityConductingOrganizationText+ delim +
+    ActivityCommentText+ delim +
+    ActContactLead+ delim +
+    ActFieldCrew+ delim +
+    AssemblageSampledName+ delim +
+    HabitatSelectionMethod+ delim +
+    CollectionDurationMeasureValue+ delim +
+    CollectionDurationMeasureUnitCode+ delim +
+    ReachLengthMeasureValue+ delim +
+    ReachLengthMeasureUnitCode+ delim +
+    ReachWidthMeasureValue+ delim +
+    ReachWidthMeasureUnitCode+ delim +
+    PassCount+ delim +
+    Amps+ delim +
+    Pulses+ delim +
+    CollectionEfficiencyEst+ delim +
+    TotalEnergizedMeasure+ delim +
+    TotalEnergizedMeasureUnit+ delim +
+    Volts+ delim +
+    DutyCycle+ delim +
+    createDate+ delim +
+    createUser+ delim +
+    lastUpdateDate+ delim +
+    lastUpdateUser+ delim
+    +'\n';
     }
     console.log(s);
     res.header('content-type', 'text/tab-separated-values; charset=utf-8');
@@ -812,3 +780,7 @@ app.get('/BioActivities_TEST/:prj',function(req,res){
 //localhost:8080/sites
 app.listen(8080, () => console.log('Listening on port 8080!'))
 
+// create loop function for each query
+// for(c in response[i]){
+//   console.log(c.toString());
+// }
