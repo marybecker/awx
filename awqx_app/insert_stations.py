@@ -44,7 +44,7 @@ def readXlsx(file, errFile):
         try:
             with xlrd.open_workbook(file) as f:
                 sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
-                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:13]] for r in range(sheet.nrows)[0:]]
+                raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:14]] for r in range(sheet.nrows)[0:]]
             return raw
         except FileNotFoundError as e:
             print(e)
@@ -75,7 +75,7 @@ SQLinsert = 'INSERT INTO ' + db_scm + '.stations' \
             'adbSegID,hydroID,stationsCommentTxt, ' \
             'createUser, createDate, lastUpdateDate, lastUpdateUser)  VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
 SQLerrLog = 'INSERT INTO ' + db_scm + '.errlog VALUES (?,?,?,?,?,?,?);'
-SQLselect = 'SELECT Max(staSeq) + 1 FROM' + db_scm + '.stations;'
+SQLselect = 'SELECT Max(staSeq) + 1 FROM ' + db_scm + '.stations;'
 
 with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     res = dbo.query(SQLselect)

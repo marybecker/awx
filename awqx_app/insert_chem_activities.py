@@ -157,6 +157,7 @@ try:
                                 + '-' + raw[i][4].replace(':', '') + '-' + 'CHEM-' + str(raw[i][9]) + raw[i][10])
                     actMedia = 'Water'
                     actMediaSub = 'Surface Water'
+                    ## ADD IN Error Handling for Incorrect Date Format
                     t = datetime.fromisoformat(raw[i][3])
                     T = get_dst_change_points(int(t.strftime('%Y')))
                     timezone = is_in_dst(t, T)

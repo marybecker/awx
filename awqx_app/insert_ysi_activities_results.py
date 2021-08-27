@@ -166,8 +166,8 @@ try:
                         Xlong = raw[i][11]
                     actHorizCollectMethod = 'GPS-Unspecified'
                     actHorizDatum = 'NAD83'
-                    actID = str(str(int(raw[i][0])) + '-FM-' + raw[i][2].replace('-', '')
-                                + '-' + raw[i][3].replace(':', '') + '-' + 'METER-' + str(raw[i][6]) + raw[i][7])
+                    actID = str(str(int(raw[i][0])) + '-FM-' + str(raw[i][2]).replace('-', '')
+                                + '-' + str(raw[i][3]).replace(':', '') + '-' + 'METER-' + str(raw[i][6]) + raw[i][7])
                     actType = 'Field Msr/Obs'
                     actMedia = 'Water'
                     actOrg = 'ctdeepWplrAbm'
