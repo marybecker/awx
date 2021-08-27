@@ -4,8 +4,8 @@ from awqx_app import mysql_connector as msc
 import xlrd
 
 #read in config file
-cdir = ''
-with open(cf_dir, 'r') as f:
+cdir = 'C:/Users/deepuser/Documents/cnf/user.cnf.txt'
+with open(cdir, 'r') as f:
     s = f.read()
     f.close()
 config = [line.rsplit(',') for line in s.rsplit('\n')]  # chop up the text by the newline='\n and the delim
@@ -122,13 +122,24 @@ current_create_users = pd.DataFrame(stations['createUser'].unique())
 current_create_users.to_excel('awqx_app/testData/createUsers.xlsx')
 
 ## Import parameter lookup
-SQLinsert = 'INSERT INTO `awqx`.`parameter_lookup`(`ProbeLabName`,`LaboratoryName`,`Probe`,`CharacteristicName`,`' \
-            'ResultMeasureUnitCode`,`ResultValueTypeName`,`SampleCollectionEquipmentCommentText`,' \
-            '`createDate`,`createUser`,`lastUpdateDate`,`lastUpdateUser`,`MethodSpeciationName`,`SampleFractionName`,' \
-            '`AnalyticalMethodID`,`AnalyticalMethodContextCode`,`SamplingType`)' \
-            'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+sql_table = 'desc awqx.parameter_lookup;'
 
-file = 'C:/Users/deepuser/Documents/Projects/wqDB_docs/CESE_CrossWalkTable_081021.xlsx'
+with msc.MYSQL('localhost', 'awqx', 3306, config_uid, config_pw) as dbo:
+    t = dbo.query(sql_table)
+
+fields = []
+
+for i in range(len(t)):
+    fields += [t[i]['Field']]
+
+SQLinsert = 'INSERT INTO `awqx`.`parameter_lookup`(`ProbeLabName`,`LaboratoryName`,`CharacteristicName`,' \
+            '`ResultValueTypeName`,`MethodSpeciationName`,`SampleFractionName`,' \
+            '`AnalyticalMethodID`,`AnalyticalMethodContextCode`,`quantitationlimittypeName`,' \
+            '`resultdetectionconditionName`,`DetectionQuantitationLimitMeasureValue`,`DetectionLimitMeasureUnitCode`,' \
+            '`SamplingType`,`createDate`,`createUser`,`lastUpdateDate`,`lastUpdateUser`)' \
+            'VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);'
+
+file = 'C:/Users/deepuser/Documents/Projects/wqDB_docs/CESE_CrossWalkTable_082321.xlsx'
 with xlrd.open_workbook(file) as f:
     sheet = f.sheet_by_index(0)  # could also use sheet_by_name("Sheet1")
     raw = [[sheet.cell_value(r, c) for c in range(sheet.ncols)[0:]] for r in range(sheet.nrows)[0:]]

@@ -203,7 +203,7 @@ else:
 
 sql_table = 'desc awqx.stations;'
 
-with msc.MYSQL('localhost', 'awqx', 3306, 'pyuser', 'test') as dbo:
+with msc.MYSQL('localhost', 'awqx', 3306, config_uid, config_pw) as dbo:
     t = dbo.query(sql_table)
 
 fields = []
