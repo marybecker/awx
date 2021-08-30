@@ -8,8 +8,8 @@ import argparse
 
 des = """
 ------------------------------------------------------------------------------------------
-Import Activities into Ambient Water Monitoring Data Exchange (wmdX) water quality database  
-Mary Becker - Last Updated 2021-03-10
+Import Activities into Ambient Water Quality Exchange (awqX) water quality database  
+Mary Becker - Last Updated 2021-08-30
 ------------------------------------------------------------------------------------------
 Given input directory of excel template spreadsheets with new station information,
 automatically checks for constraints with the database schema and produces an
@@ -144,23 +144,36 @@ try:
                 for i in range(len(raw)):
                     # generate auto populated fields for grab chemistry
                     if len(raw[i][20]) == 0:
-                        Ylat = 0
+                        Ylat = None
                     else:
                         Ylat = raw[i][20]
                     if len(raw[i][21]) == 0:
-                        Xlong = 0
+                        Xlong = None
                     else:
                         Xlong = raw[i][21]
                     actHorizCollectMethod = 'GPS-Unspecified'
                     actHorizDatum = 'NAD83'
+                    # Error Handling for Incorrect Date Format
+                    if type(raw[i][3]) == str:
+                        try:
+                            t = datetime.fromisoformat(str(raw[i][3]))
+                            T = get_dst_change_points(int(t.strftime('%Y')))
+                            timezone = is_in_dst(t, T)
+                        except ValueError:
+                            print('incorrect date format')
+                    else:
+                        print('incorrect date format')
+                        msg = 'Check activity date format on row %s.  It needs to be in iso-format (e.g. 2021-08-30). ' \
+                              'You may need to reformat as text. All rows below %s not inserted.' % (i+2,i+2)
+                        db_err += [[msg]]
+                        s = '\n'.join([delim.join(row) for row in db_err])
+                        with open(fpath_err, 'w') as f:
+                            f.write(s)
+                        raise TypeError
                     actID = str(str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
                                 + '-' + raw[i][4].replace(':', '') + '-' + 'CHEM-' + str(raw[i][9]) + raw[i][10])
                     actMedia = 'Water'
                     actMediaSub = 'Surface Water'
-                    ## ADD IN Error Handling for Incorrect Date Format
-                    t = datetime.fromisoformat(raw[i][3])
-                    T = get_dst_change_points(int(t.strftime('%Y')))
-                    timezone = is_in_dst(t, T)
                     equipment = 'Water Bottle'
                     user_name = fpath_base.rsplit('\\')[-1]
                     V_insert = raw[i][0:20] + [Ylat] + [Xlong]+ [actHorizCollectMethod] + [actHorizDatum] + \

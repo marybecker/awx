@@ -157,11 +157,11 @@ try:
                 for i in range(len(raw)):
                     # generate auto populated fields for grab chemistry
                     if len(str(raw[i][10])) == 0:
-                        Ylat = 0
+                        Ylat = None
                     else:
                         Ylat = raw[i][10]
                     if len(str(raw[i][11])) == 0:
-                        Xlong = 0
+                        Xlong = None
                     else:
                         Xlong = raw[i][11]
                     actHorizCollectMethod = 'GPS-Unspecified'
@@ -171,9 +171,23 @@ try:
                     actType = 'Field Msr/Obs'
                     actMedia = 'Water'
                     actOrg = 'ctdeepWplrAbm'
-                    t = datetime.fromisoformat(raw[i][2])
-                    T = get_dst_change_points(int(t.strftime('%Y')))
-                    timezone = is_in_dst(t, T)
+                    # Error Handling for Incorrect Date Format
+                    if type(raw[i][2]) == str:
+                        try:
+                            t = datetime.fromisoformat(str(raw[i][2]))
+                            T = get_dst_change_points(int(t.strftime('%Y')))
+                            timezone = is_in_dst(t, T)
+                        except ValueError:
+                            print('incorrect date format')
+                    else:
+                        print('incorrect date format')
+                        msg = 'Check activity date format on row %s.  It needs to be in iso-format (e.g. 2021-08-30). ' \
+                              'You may need to reformat as text. All rows below %s not inserted.' % (i+2,i+2)
+                        db_err += [[msg]]
+                        s = '\n'.join([delim.join(row) for row in db_err])
+                        with open(fpath_err, 'w') as f:
+                            f.write(s)
+                        raise TypeError
                     equipment = 'Probe/Sensor'
                     user_name = fpath_base.rsplit('\\')[-1]
                     V_insert = raw[i][0:10] + raw[i][12:] + \

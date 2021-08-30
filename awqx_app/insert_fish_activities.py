@@ -144,13 +144,27 @@ try:
                 # Insert into the database line by line.  Append DB error if not caught by qc checks.
                 for i in range(len(raw)):
                     # generate auto populated fields for fish
+                    # Error Handling for Incorrect Date Format
+                    if type(raw[i][3]) == str:
+                        try:
+                            t = datetime.fromisoformat(str(raw[i][3]))
+                            T = get_dst_change_points(int(t.strftime('%Y')))
+                            timezone = is_in_dst(t, T)
+                        except ValueError:
+                            print('incorrect date format')
+                    else:
+                        print('incorrect date format')
+                        msg = 'Check activity date format on row %s.  It needs to be in iso-format (e.g. 2021-08-30). ' \
+                              'You may need to reformat as text. All rows below %s not inserted.' % (i+2,i+2)
+                        db_err += [[msg]]
+                        s = '\n'.join([delim.join(row) for row in db_err])
+                        with open(fpath_err, 'w') as f:
+                            f.write(s)
+                        raise TypeError
                     # actID is sid-actType-date-time-prj
                     actID = str(str(int(raw[i][1])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
                                 + '-' + raw[i][4].replace(':', '') + '-' + raw[i][0])
                     actMedia = 'Biological'
-                    t = datetime.fromisoformat(raw[i][3])
-                    T = get_dst_change_points(int(t.strftime('%Y')))
-                    timezone = is_in_dst(t, T)
                     assemblage = 'Fish/Nekton'
                     user_name = fpath_base.rsplit('\\')[-1]
                     V_insert = raw[i][0:26] + [actID] + [actMedia] + [timezone] + [assemblage] + \
