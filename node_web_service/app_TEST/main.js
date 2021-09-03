@@ -1,4 +1,3 @@
-
 var hydro = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSHydroCached/MapServer/tile/{z}/{y}/{x}',{
     attribution: 'USGS The National Map: National Hydrography Dataset. Data refreshed March, 2020.',
     maxZoom:16}),
@@ -9,8 +8,6 @@ var hydro = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/US
     usgsImg = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/USGSImageryTopo/MapServer/tile/{z}/{y}/{x}',{
         attribution: 'USGS The National Map: Orthoimagery and US Topo. Data refreshed September, 2019.',
         maxZoom:16}),
-    //hydro = L.esri.tiledMapLayer({url: "https://basemap.nationalmap.gov/arcgis/rest/services/USGSHydroCached/MapServer",maxZoom:16}),
-    //topo = L.esri.tiledMapLayer({url: "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer",maxZoom:16});
     sat = L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 22,
@@ -20,7 +17,6 @@ var hydro = L.tileLayer('https://basemap.nationalmap.gov/arcgis/rest/services/US
     Esri_WorldTopoMap = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and the GIS User Community'
     });
-    
 
 var baseMaps = {"NHD Hydro": hydro,"USGS Topo": topo,"MapBox Satellite":sat,"USGS Imagery":usgsImg,"Esri World Topo":Esri_WorldTopoMap};
 
@@ -37,8 +33,9 @@ map.getPane('basinPane').style.zIndex = 300;
 var arr = [];
 var arr1 = [];
 
-var stations="http://SDC-EPAFiling:8080/StationsMap/sites_TEST";
-// var stations="http://localhost:8080/StationsMap/sites";
+var stations="http://SDC-EPAFiling:8080/StationsMap/sites";
+// var stations="http://localhost:8080/StationsMap/sites_TEST";
+// var stations ="data/sites.json";
 
 var stationsLayer = $.getJSON(stations, function(data) {
     console.log(data);
@@ -158,7 +155,7 @@ function getBasinInfo(data){
                     '<b>Lat: </b>'+ e.latlng.lat +'</br>'+'<b>Long: </b>'+e.latlng.lng+'</p>';
                 }else{
                     document.getElementById("newSiteInfo").innerHTML = 
-                    "<h2 class='txt-xl mt18 mb12'>Select another area:</h2>"+"Not a Valid Region!"
+                    "<h2>Select another area:</h2>"+"Not a Valid Region!"
                 }
             });
             layer.on("mouseover", function (e) { inside = true; console.log(inside); });
@@ -183,7 +180,7 @@ var basinLayer = $.when(stateBoundJSON).done(function(){$.getJSON("data/Subregio
     });
 })
 
-var search = L.control({position: 'topleft'});
+// var search = L.control({position: 'topleft'});
 
 search.onAdd = function(map) {
     var controls = L.DomUtil.get("search");
@@ -208,7 +205,7 @@ function addDataToAutocomplete(arr) {
     $( "#autocomplete" ).autocomplete("option", "source", arr); 
 
     $( "#autocomplete" ).on( "autocompleteselect", function( event, ui ) {
-        siteSelect(ui.item.label);  //grabs selected state name
+        siteSelect(ui.item.label);  //grabs selected station name
         ui.item.value='';
     });
 }
@@ -223,19 +220,39 @@ map.on('click',function(e){
     console.log(e.latlng);
     if (!inside){
         document.getElementById("newSiteInfo").innerHTML = 
-        "<h2 class='txt-xl mt18 mb12'>Select another area:</h2>"+"Not a Valid Region!"
+        "<h2>Select another area:</h2>"+"Not a Valid Region!"
         // document.getElementById("LatLng").innerHTML = '<b>Lat: </b>'+ e.latlng.lat +'</br>'+'<b>Long: </b>'+e.latlng.lng;
     };
 })
 
 function zoomToLatLong() {
-        var lat = document.getElementById("lat").value;
-        var lng = document.getElementById("lng").value;
-        console.log([lat,lng]);
-    if (lat == "" || lng == ""){
-        map.setView([41.67598909594535, -72.62512207031251],9);
-    } else {
-        map.flyTo(new L.LatLng(lat, lng),16);
+    var lat = document.getElementById("lat").value;
+    var lng = document.getElementById("lng").value;
+    console.log([lat,lng]);
+  if (lat == "" || lng == ""){
+    map.setView([41.55, -72.65],9);
+  } else {
+    try{
+      map.flyTo(new L.LatLng(lat, lng),16);
+      if (typeof circle !== 'undefined'){
+        map.removeLayer(circle);
+        circle = L.circle([lat, lng], {
+          color: 'white',
+          fillColor: 'black',
+          fillOpacity: 0.5,
+          radius: 15
+      }).addTo(map)
+      } else {
+        circle = L.circle([lat, lng], {
+          color: 'white',
+          fillColor: 'black',
+          fillOpacity: 0.5,
+          radius: 15
+      })
+      circle.addTo(map);
+      } 
+    } catch (error){
+      map.setView([41.55, -72.65],9);
     }
-        
-}   
+  } 
+}

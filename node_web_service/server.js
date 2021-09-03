@@ -52,7 +52,8 @@ app.get('/Stations',function(req,res){
 		console.log(response);
 		var features = [];
 	  for (var i = 0; i<response.length; i++){
-        var point = [response[i].staSeq.toString(),response[i].locationName,response[i].locationDescription,response[i].ylat,response[i].xlong]
+        var point = [response[i].staSeq.toString(),response[i].locationName,response[i].locationDescription,
+        response[i].ylat,response[i].xlong,response[i].munName,response[i].subBasin,response[i].lastUpdateDate.toISOString().substring(0,10)]
 	    features.push(point);
       }
       
@@ -63,14 +64,20 @@ app.get('/Stations',function(req,res){
             "WaterbodyName"+delim + 
             "Description" + delim +
             "ylat" + delim +
-            "xlong\n";   //header line
+            "xlong"+ delim +
+            "munName"+ delim +
+            "subBasin"+ delim +
+            "lastUpdateDate\n";   //header line
     for(var i=0; i<features.length; i++){  //convert each row of data to string
         var sid = features[i][0].toString();
         var name = features[i][1].toString();
         var descrip = features[i][2].toString();
         var lat = features[i][3].toString();
         var long = features[i][4].toString();
-        s += sid+delim+name+delim+descrip+delim+lat+delim+long+'\n';
+        var munName = features[i][5].toString();
+        var subBasin = features[i][6].toString();
+        var lastUpdateDate = features[i][7].toString();
+        s += sid+delim+name+delim+descrip+delim+lat+delim+long+delim+munName+delim+subBasin+delim+lastUpdateDate+'\n';
     }
     console.log(s);
     res.header('content-type', 'text/tab-separated-values; charset=utf-8');
