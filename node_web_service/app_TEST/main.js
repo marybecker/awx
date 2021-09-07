@@ -33,7 +33,7 @@ map.getPane('basinPane').style.zIndex = 300;
 var arr = [];
 var arr1 = [];
 
-var stations="http://SDC-EPAFiling:8080/StationsMap/sites";
+var stations="http://SDC-EPAFiling:8080/StationsMap/sites_TEST";
 // var stations="http://localhost:8080/StationsMap/sites_TEST";
 // var stations ="data/sites.json";
 
