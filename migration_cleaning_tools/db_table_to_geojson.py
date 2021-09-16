@@ -17,7 +17,7 @@ SQL_select = 'SELECT * FROM awqx.stations;'
 with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
     res = dbo.query(SQL_select)
 
-features = {};
+features = []
 for i in range(len(res)):
     point = {
       "type": "Feature",
