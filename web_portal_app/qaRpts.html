@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>awqX</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel='icon' href='images/waterDB.svg' type='image/x-icon'/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navigation -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark text-white bg-secondary static-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="images/waterDB.svg" alt="awX" height="75" width="75">
+          </a>
+          <h1>Downloads and Reports</h1>
+          
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">home
+                  <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#downloads">activities</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#results">results</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#qaRpts">reports</a>
+          </li>
+        </ul>
+      </div>
+      <img src="images/DEEP-Circle-Logo.png" alt="CT DEEP" height="75" width="75">
+    </div>
+</nav>
+
+<!-- activities section -->
+<div class="container bg-light mt-5 pt-5">
+  <h1 class="mt-4 text-black" id="downloads">Stations / Projects / Activities QA Download</h1>
+  <p>Download data from awX, such as stations and activities as a text file.  N.B.  Data is for QA purposes.  Use WQX for final data.</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/diatom_stupa.jpg" alt="Stupa" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Stations</h4>
+          <hr>
+          <a class="btn btn-secondary" href="http://sdc-epafiling:8080/Stations/" role="button">Download</a>
+          <hr>
+          <p class="card-text">Download master list all stations in awX.  <a href="http://sdc-epafiling:8080/StationsMap/">Map of stations</a> also available. </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/Riga_Scale.png" alt="Riga" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Projects</h4>
+          <hr>
+          <a class="btn btn-secondary" href="http://sdc-epafiling:8080/Projects/" role="button">Download</a>
+          <hr>
+          <p class="card-text">Download a list of current projects in awX.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/Electrofishing.JPG" alt="Fish ShockingS" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Activities</h4>
+          <hr>
+          <a class="btn btn-secondary" href="#" role="button" id="actBtn" target="_blank">Download</a>
+          <hr>
+          <p class="card-text">Download activities data for a project.  When prompted enter a valid project id.  See the projects download for a list of projects.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- results section -->
+<div id="results" class="container bg-light mt-5">
+  <h1 class="mt-4 text-black">Results for QA Downloads</h1>
+  <p>Download preliminary results for QA.</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/ChemGrab.jpg" alt="Chem Grab" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Chem / Bacti Results</h4>
+          <hr>
+          <a class="btn btn-secondary" href="#results" role="button" target="_blank">Download</a>
+          <hr>
+          <p class="card-text">Placeholder for chem results. </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/Dempsey.jpg" alt="Dempsey" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Field Meter Results</h4>
+          <hr>
+          <a class="btn btn-secondary" href="#results" role="button" target="_blank">Download</a>
+          <hr>
+          <p class="card-text">Placeholder for ysi results.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <img class="card-img-top" src="images/Perlidae.jpg" alt="Fish ShockingS" height="200">
+        <div class="card-body">
+          <h4 class="card-title">Bio Results</h4>
+          <hr>
+          <a class="btn btn-secondary" href="#" role="button" id="actBtn" target="_blank">Download</a>
+          <hr>
+          <p class="card-text">Placeholder for bio results.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- QA Reports -->
+<div id="qaRpts" class="container bg-light mt-5">
+  <h1 class="mt-4 text-black">QA Reports for Download</h1>
+  <p>Placeholder for QA Rpts</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="bactiRpt.html"><img class="card-img-top" src="images/BeachRpt.png" alt="Beach Rpt"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="bactiRpt.html">Reports</a>
+          </h4>
+          <p class="card-text">2019 Beach Rpt as an example.  Separate page of data reports such as lakes and river reports, call reports etc.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="https://marybecker.github.io/Biointegrity/"><img class="card-img-top" src="images/BioIntApp.png" alt="BioIntApp"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="https://marybecker.github.io/Biointegrity/">Data Visualization</a>
+          </h4>
+          <p class="card-text">Biointegrity app as an example.  Separate page of apps including cold water, vol mon, MMI model, BCG etc.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="https://github.com/ctdeepwatermonitoring"><img class="card-img-top" src="images/RScript.png" alt="R logo"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="https://github.com/ctdeepwatermonitoring">R Scripts</a>
+          </h4>
+          <p class="card-text">Placeholder for scripts developed for accessing and manipulating awX and WQX data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+   <!-- Footer -->
+   <footer class="py-5 bg-secondary">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; awX development team 2020</p>
+    </div>
+  </footer>
+  
+  <!-- /.container -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="qaRpts.js"></script><!-- load the main.js file for map-->
+</body>
+</html>

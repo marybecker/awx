@@ -1,0 +1,248 @@
+import requests
+import datetime
+import hmac
+import base64
+import argparse
+import pandas as pd
+from awqx_app import mysql_connector as msc
+import zipfile
+import io
+
+des = """
+------------------------------------------------------------------------------------------
+Import Data from Ambient Water Monitoring Data Exchange water quality database (awqX) 
+to WQX via WQX Web API
+Mary Becker - Last Updated 2022-03-18
+------------------------------------------------------------------------------------------
+Given input directory and config files to upload new data from awqx to WQX Web using
+ the WQX Web API"""
+
+parser = argparse.ArgumentParser(description=des.lstrip(" "), formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument('-f', '--f_dir',       type=str, help='input directory of import file')
+parser.add_argument('-f', '--f_type',      type=str, help='type of import')
+parser.add_argument('-s', '--s_type',      type=str, help='input uri for upload web service')
+parser.add_argument('-c', '--cf_dir',      type=str, help='input directory of config file')
+parser.add_argument('-i', '--config_id',   type=str, help='input database schema name')
+parser.add_argument('-d', '--db_scm',      type=str, help='input database schema name')
+args = parser.parse_args()
+
+# build args into params...
+if args.f_dir is not None:
+    f_dir = args.f_dir
+else:
+    raise IOError
+
+if args.f_type is not None:
+    f_type = args.f_type
+else:
+    raise IOError
+
+if args.s_type is not None:
+    s_type = args.s_type
+else:
+    raise IOError
+
+if args.cf_dir is not None:
+    cf_dir = args.cf_dir
+else:
+    raise IOError
+
+if args.config_id is not None:
+    config_id = args.config_id
+else:
+    raise IOError
+
+if args.db_scm is not None:
+    db_scm = args.db_scm
+else:
+    raise IOError
+
+
+
+# Input wqx info and uri of data, returns a list of dict results
+def binary_reader(path):
+    s = b''
+    with open(path, 'rb') as f: s = f.read()
+    return bytearray(s)
+
+def wqx_request(requesttype, user_id, user_key, uri, data, routput):
+    requesttype = requesttype
+    contenttype = 'application/json'
+    timestamp = datetime.datetime.utcnow()
+    timestamp_mdy = timestamp.strftime("%m/%d/%Y").lstrip("0").replace(" 0", " ")
+    timestamp_hms = timestamp.strftime("%I:%M:%S %p")
+    timestamp = timestamp_mdy + " " + timestamp_hms
+    private_key = bytearray(base64.b64decode(user_key))
+    str_sig = user_id + timestamp + uri + requesttype
+    signature = bytearray(str_sig, 'utf-8')
+    encrypted = hmac.new(private_key, signature, digestmod='sha256').digest()
+    encrypted = base64.b64encode(encrypted).decode()
+    headers = {'X-UserID': user_id, 'X-Stamp': timestamp, 'X-Signature': encrypted, 'Content-Type': contenttype}
+    print(headers)
+    if requesttype == 'GET':
+        r = requests.get(uri, headers=headers)
+        print(r)
+        try:
+            routput += [r.json()]  # returns a list of dicts
+        except Exception as E:
+            print(E)
+            pass
+    if requesttype == 'POST':
+        r = requests.post(uri, data=data, headers=headers)
+        print(r)
+        try:
+            routput += [r.json()]  # returns a list of dicts
+        except Exception as E:
+            print(E)
+            pass
+
+# Write out file for import to WQX
+def write_delim(list_name, out_loc, delim):
+    s = '\n'.join([delim.join([str(e) for e in row]) for row in list_name])
+    with open(out_loc, 'w') as f:
+        f.write(s)
+
+# Read in config file - Variables used for all WQX Web requests
+with open(cf_dir, 'r') as f:
+    s = f.read()
+    f.close()
+config      = [line.rsplit(',') for line in s.rsplit('\n')]  # chop up the text by the newline='\n and the delim
+user_id     = config[0][1]
+user_key    = config[1][1]
+config_uid  = config[2][1]
+config_pw   = config[3][1]
+
+if f_type == 'stations' or f_type == 'meter':
+
+    SQLselect = 'SELECT * FROM ' + db_scm + '.wqximp_' + f_type + ' JOIN wqximp_last_import ON ' \
+                'wqximp_last_import.importType = "wqximp_' + f_type + '" WHERE wqximp_' + f_type + \
+                '.lastUpdateDate > wqximp_last_import.lastImportDate;'
+
+
+else:
+    SQLselect = 'SELECT * FROM ' + db_scm + '.wqximp_' + f_type + ' JOIN wqximp_last_import ON ' \
+                'wqximp_last_import.importType = "wqximp_' + f_type + '" WHERE wqximp_' + f_type + \
+                '.rstLastUpdateDate > wqximp_last_import.lastImportDate or  wqximp_' + f_type + \
+                '.actLastUpdateDate > wqximp_last_import.lastImportDate'
+
+
+
+with msc.MYSQL('localhost', db_scm, 3306, config_uid, config_pw) as dbo:
+    res = dbo.query(SQLselect)
+
+
+
+
+# FOR TEST ONLY ###############################################################
+# for i in range(len(res)):
+#     res[i]['staSeq']            = str(res[i]['staSeq'])+'_CTDEEP'
+#     res[i]['ProjectIdentifier'] = 'benthicAlgABM'
+    #res[i]['ProjectIdentifier'] = str(res[i]['ProjectIdentifier']) + '_CTDEEP'
+###############################################################################
+for i in range(len(res)):
+    if 'ActivityStartDate' in list(res[i].keys()):
+        res[i]['ActivityStartDate'] = res[i]['ActivityStartDate'].strftime('%m/%d/%Y')
+    if 'ActivityTime'in list(res[i].keys()):
+        res[i]['ActivityTime'] = str(res[i]['ActivityTime'])[:-3]
+    if 'AnalysisStartDate' in list(res[i].keys()):
+        if res[i]['AnalysisStartDate'] is not None:
+            res[i]['AnalysisStartDate'] = res[i]['AnalysisStartDate'].strftime('%m/%d/%Y')
+
+
+f_import = f_dir + f_type + '_' +datetime.datetime.today().strftime('%Y%m%d_%H%M%S') + '.xlsx'
+import_view = pd.DataFrame.from_dict(res)
+col_ck1 = import_view.columns[-4]
+col_ck2 = import_view.columns[-3]
+col_ck3 = import_view.columns[-2]
+col_ck4 = import_view.columns[-1]
+if col_ck1.endswith('astUpdateDate') or col_ck1.endswith('importType') or col_ck1.endswith('lastImportDate'):
+    import_view = import_view.drop([col_ck1],axis=1)
+if col_ck2.endswith('astUpdateDate') or col_ck2.endswith('importType') or col_ck2.endswith('lastImportDate'):
+    import_view = import_view.drop([col_ck2],axis=1)
+if col_ck3.endswith('astUpdateDate') or col_ck3.endswith('importType') or col_ck3.endswith('lastImportDate'):
+    import_view = import_view.drop([col_ck3],axis=1)
+if col_ck4.endswith('astUpdateDate') or col_ck4.endswith('importType') or col_ck4.endswith('lastImportDate'):
+    import_view = import_view.drop([col_ck4],axis=1)
+import_view.to_excel(f_import,index = False)
+# import_view = [list(res[i].values()) for i in range(len(res))]
+# import_view = [import_view[i][:-1] for i in range(len(import_view))]
+# write_delim(import_view,f_import,'\t')
+
+# Specify type of import and wqx web configs
+# These are the only files that change based on import type
+
+# Start file upload to web server #################################
+###################################################################
+
+# Identify import config (uri) and data to upload (datafile as xlsx)
+uri = 'https://cdx2.epa.gov/WQXWeb/api/Upload/' + s_type
+datafile = f_import
+data = binary_reader(datafile)
+fileID = []
+
+wqx_request('POST', user_id, user_key, uri, data, fileID)
+
+# Start Import to WQX Web  #########################################
+
+base = 'https://cdx2.epa.gov/WQXWeb/api/StartImport?' \
+       'importConfigurationId='
+file_id = fileID[0]
+end = 'fileType=XLSX&' \
+      'newOrExistingData=0&' \
+      'uponCompletion=0&' \
+      'uponCompletionCondition=0&' \
+      'worksheetsToImport=1&' \
+      'ignoreFirstRowOfFile=true'
+import_uri = base + config_id + '&fileId=' + file_id + '&' + end
+dataset_id = []
+
+wqx_request('GET', user_id, user_key, import_uri, None, dataset_id)
+
+# Get status of data set  #########################################
+
+status_uri = 'https://cdx2.epa.gov/WQXWeb/api/GetStatus?datasetId=' + dataset_id[0]
+status = []
+
+wqx_request('GET', user_id, user_key, status_uri, None, status)
+print(status[0])
+
+# Start Xml Export
+
+xml_uri = 'https://cdx2.epa.gov/WQXWeb/api/StartXmlExport?datasetId=' + dataset_id[0] + '&uponCompletion=0'
+xml_status = []
+
+wqx_request('GET', user_id, user_key, xml_uri, None, xml_status)
+
+
+# Submit data set to CDX
+
+cdx_uri = 'https://cdx2.epa.gov/WQXWeb/api/SubmitDatasetToCdx?datasetId=' + dataset_id[0]
+cdx_status = []
+
+wqx_request('GET', user_id, user_key, cdx_uri, None, cdx_status)
+print(cdx_status)
+
+# Get available documents for a data set submission
+
+document_uri = 'https://cdx2.epa.gov/WQXWeb/api/GetDocumentList?datasetId=' + dataset_id[0]
+document_list = []
+
+wqx_request('GET', user_id, user_key, document_uri, None, document_list)
+
+r = requests.get(document_list[0][3])
+bytes = r.content
+z = zipfile.ZipFile(io.BytesIO(bytes))
+s = z.read(z.infolist()[0]).decode()
+i_log = pd.read_xml(s)
+
+
+delim = ','  # set you delimiter => CSV=','
+z = zipfile.ZipFile(io.BytesIO(bytes))  # setup an in memory zip decompressor
+# z      = zipfile.ZipFile('C:/Users/deepuser/Desktop/Taxon_CSV.zip') # use if having request issues above
+s = z.read(z.infolist()[0]).decode()  # read and decode the decompressed bytestring
+raw = [line.rsplit(delim) for line in s.rsplit('\n')]  # chop up the text by the newline='\n and the delim
+header = [name.replace(' ', '_').lower() for name in raw[0]]  # format the column names the way you want
+pos = {header[i]: i for i in range(len(header))}  # setup column names for convience
+data = raw[1:]  # slice off the data for access
+
+write_delim(data,f_dir + 'validation.csv',',')

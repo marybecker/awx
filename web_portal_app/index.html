@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>awqX</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <link rel='icon' href='images/waterDB.svg' type='image/x-icon'/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <!-- Navigation -->
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark text-white bg-secondary static-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <img src="images/waterDB.svg" alt="awX" height="75" width="75">
+          </a>
+          <h1>awX portal</h1>
+          
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">home
+                  <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#upload">upload</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#retrieve">retrieve</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#explore">explore</a>
+          </li>
+        </ul>
+      </div>
+      <img src="images/DEEP-Circle-Logo.png" alt="CT DEEP" height="75" width="75">
+    </div>
+</nav>
+
+<header class ="bg-dark">
+    <div class ="container bg-dark text-white rounded">
+        <div class = "row">
+              <div class="col-md-6">
+                <h3 class="mt-5 text-primary">about the portal</h3>
+                <p>The portal provides links needed to upload, retrieve and explore ambient water data collected by the 
+                    CT DEEP Water Planning Division. This includes ambient biological, physical, chemical, 
+                    temperature/conductivity logger (eventually) and stream connectivity (eventually) data.  
+                    Data is collected in rivers, streams, lakes and estuaries across Connecticut.</p>
+              </div>
+              <div class="col-md-6">
+                <img class="img-fluid my-4" src="images/waterDB_inverse_logo.svg" alt="awqX" height="400" width="400">
+              </div>
+          
+        </div>
+    </div>
+</header>
+
+<!-- upload section -->
+<div class="container bg-light mt-5">
+  <h1 class="mt-4 text-black" id="upload">upload</h1>
+  <p>Find existing stations, get new station information, QC data and access tutorials that explain the awX workflow.</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="http://sdc-epafiling:8080/StationsMap/" target="_blank"><img class="card-img-top" src="images/stationsmap.png" alt="Stations Map" height="200"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="http://sdc-epafiling:8080/StationsMap/">Stations Map</a>
+          </h4>
+          <p class="card-text">Map of stations with a live connection to the water quality database. Search for existing stations and get information needed to create a new station.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="pdf/awx_data_insert_instructions_RoughDraft_PreRelease_031721.pdf" target="_blank"><img class="card-img-top" src="images/tutorial.png" alt="tutorial" height=200;></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="pdf/awx_data_insert_instructions_RoughDraft_PreRelease_031721.pdf" target="_blank">Tutorial</a>
+          </h4>
+          <p class="card-text">Access the draft awX guide and tutorials to insert water quality data into the database and WQX.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="qaRpts.html" target="_blank"><img class="card-img-top" src="images/template.png" alt="Upload Reports"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="qaRpts.html" target="_blank">QC Data and Reports</a>
+          </h4>
+          <p class="card-text">Access upload reports and download raw stations, project and activities data for QC. 
+            N.B. Final data should be accessed through the <a href="https://www.waterqualitydata.us/">water quality portal</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- retrieve section -->
+<div id="retrieve" class="container bg-light mt-5">
+  <h1 class="mt-4 text-black">retrieve</h1>
+  <p>Access final raw data for water quality, temperature and stream connectivity.</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="https://www.waterqualitydata.us/"><img class="card-img-top" src="images/wqPortal.png" alt="WQ Portal"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="https://www.waterqualitydata.us/">Water Quality Portal</a>
+          </h4>
+          <p class="card-text">Final QAed ambient water quality data collected by CT can be found here. The Water Quality Portal (WQP) is a cooperative service sponsored by the United States Geological Survey (USGS), the Environmental Protection Agency (EPA), and the National Water Quality Monitoring Council (NWQMC). It serves data collected by over 400 state, federal, tribal, and local agencies.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="http://db.ecosheds.org/"><img class="card-img-top" src="images/streamTempDB.png" alt="SHEDS"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="http://db.ecosheds.org/">SHEDS Stream Temperature Database</a>
+          </h4>
+          <p class="card-text">The SHEDS Stream Temperature Database website is a portal for viewing, downloading, uploading, and managing stream temperature data across the northeastern U.S. The Stream Temperature database is part of the Spatial Hydro-Ecological Decision System (SHEDS).</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="#retrieve"><img class="card-img-top" src="images/dryStream.png" alt="Dry Stream"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="#retrieve">Stream Connectivity</a>
+          </h4>
+          <p class="card-text">Placeholder for stream connectivity data and metrics.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- explore section -->
+<div id="explore" class="container bg-light mt-5">
+  <h1 class="mt-4 text-black">explore</h1>
+  <p>Explore data information tools.  Find reports, interactive data visualization apps and Rscripts for exploring data.</p>
+  <div class="row">
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="bactiRpt.html"><img class="card-img-top" src="images/BeachRpt.png" alt="Beach Rpt"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="bactiRpt.html">Reports</a>
+          </h4>
+          <p class="card-text">2019 Beach Rpt as an example.  Separate page of data reports such as lakes and river reports, call reports etc.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="https://marybecker.github.io/Biointegrity/"><img class="card-img-top" src="images/BioIntApp.png" alt="BioIntApp"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="https://marybecker.github.io/Biointegrity/">Data Visualization</a>
+          </h4>
+          <p class="card-text">Biointegrity app as an example.  Separate page of apps including cold water, vol mon, MMI model, BCG etc.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-sm-6 mb-4">
+      <div class="card h-100">
+        <a href="https://github.com/ctdeepwatermonitoring"><img class="card-img-top" src="images/RScript.png" alt="R logo"></a>
+        <div class="card-body">
+          <h4 class="card-title">
+            <a href="https://github.com/ctdeepwatermonitoring">R Scripts</a>
+          </h4>
+          <p class="card-text">Placeholder for scripts developed for accessing and manipulating awX and WQX data.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+   <!-- Footer -->
+   <footer class="py-5 bg-secondary">
+    <div class="container">
+      <p class="m-0 text-center text-white">Copyright &copy; awX development team 2020</p>
+    </div>
+  </footer>
+  
+  <!-- /.container -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+</html>

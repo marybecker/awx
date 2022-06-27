@@ -1,0 +1,1 @@
+data<- read.table('http://localhost:8080/Stations',header=TRUE,sep='\t')
