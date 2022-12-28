@@ -175,7 +175,7 @@ import_view.to_excel(f_import,index = False)
 ###################################################################
 
 # Identify import config (uri) and data to upload (datafile as xlsx)
-uri = 'https://cdx2.epa.gov/WQXWeb/api/Upload/' + s_type
+uri = 'https://cdx.epa.gov/WQXWeb/api/Upload/' + s_type
 datafile = f_import
 data = binary_reader(datafile)
 fileID = []
@@ -184,7 +184,7 @@ wqx_request('POST', user_id, user_key, uri, data, fileID)
 
 # Start Import to WQX Web  #########################################
 
-base = 'https://cdx2.epa.gov/WQXWeb/api/StartImport?' \
+base = 'https://cdx.epa.gov/WQXWeb/api/StartImport?' \
        'importConfigurationId='
 file_id = fileID[0]
 end = 'fileType=XLSX&' \
@@ -200,7 +200,7 @@ wqx_request('GET', user_id, user_key, import_uri, None, dataset_id)
 
 # Get status of data set  #########################################
 
-status_uri = 'https://cdx2.epa.gov/WQXWeb/api/GetStatus?datasetId=' + dataset_id[0]
+status_uri = 'https://cdx.epa.gov/WQXWeb/api/GetStatus?datasetId=' + dataset_id[0]
 status = []
 
 wqx_request('GET', user_id, user_key, status_uri, None, status)
@@ -208,7 +208,7 @@ print(status[0])
 
 # Start Xml Export
 
-xml_uri = 'https://cdx2.epa.gov/WQXWeb/api/StartXmlExport?datasetId=' + dataset_id[0] + '&uponCompletion=0'
+xml_uri = 'https://cdx.epa.gov/WQXWeb/api/StartXmlExport?datasetId=' + dataset_id[0] + '&uponCompletion=0'
 xml_status = []
 
 wqx_request('GET', user_id, user_key, xml_uri, None, xml_status)
@@ -216,7 +216,7 @@ wqx_request('GET', user_id, user_key, xml_uri, None, xml_status)
 
 # Submit data set to CDX
 
-cdx_uri = 'https://cdx2.epa.gov/WQXWeb/api/SubmitDatasetToCdx?datasetId=' + dataset_id[0]
+cdx_uri = 'https://cdx.epa.gov/WQXWeb/api/SubmitDatasetToCdx?datasetId=' + dataset_id[0]
 cdx_status = []
 
 wqx_request('GET', user_id, user_key, cdx_uri, None, cdx_status)
@@ -224,7 +224,7 @@ print(cdx_status)
 
 # Get available documents for a data set submission
 
-document_uri = 'https://cdx2.epa.gov/WQXWeb/api/GetDocumentList?datasetId=' + dataset_id[0]
+document_uri = 'https://cdx.epa.gov/WQXWeb/api/GetDocumentList?datasetId=' + dataset_id[0]
 document_list = []
 
 wqx_request('GET', user_id, user_key, document_uri, None, document_list)

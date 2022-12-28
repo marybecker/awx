@@ -218,3 +218,7 @@ sql_select = 'SELECT ' + sel_fields + ' FROM awqx.stations';
 with msc.MYSQL('localhost', 'awqx', 3306, config_uid, config_pw) as dbo:
     s = dbo.query(sql_select)
 
+staSeq_awX = []
+
+
+

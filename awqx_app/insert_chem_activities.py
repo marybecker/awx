@@ -154,7 +154,7 @@ try:
                         actHorizDatum = None
                     else:
                         actHorizCollectMethod = 'GPS-Unspecified'
-                        actHorizDatum = 'NAD83'
+                        actHorizDatum = 'WGS84'
                     # Error Handling for Incorrect Date Format
                     if type(raw[i][3]) == str:
                         try:

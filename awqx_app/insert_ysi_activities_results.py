@@ -167,7 +167,7 @@ try:
                         actHorizDatum = None
                     else:
                         actHorizCollectMethod = 'GPS-Unspecified'
-                        actHorizDatum = 'NAD83'
+                        actHorizDatum = 'WGS84'
                     try:
                         actID = str(str(int(raw[i][0])) + '-FM-' + str(raw[i][2]).replace('-', '')
                                     + '-' + str(raw[i][3]).replace(':', '') + '-' + 'METER-' +

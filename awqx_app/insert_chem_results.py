@@ -1,5 +1,5 @@
 import glob
-from awqx_app import mysql_connector as msc
+import mysql_connector as msc
 import pandas as pd
 # import xlrd
 from datetime import datetime

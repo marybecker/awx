@@ -1,5 +1,5 @@
-from awqx_app import mysql_connector as msc
 # import xlrd #Support for xlsx was removed, explore openpyxl
+from awqx_app import mysql_connector as msc
 import pandas as pd
 from datetime import datetime
 
@@ -21,7 +21,7 @@ def db_field(table, field):
     return p_name
 
 # Open file with CESE data
-file = 'C:/Users/deepuser/Documents/Projects/wqDB_docs/testing_data/CombinedData_CESE_2020.xlsx'
+file = 'P:/ABM_DB/Data/DataReceivedFromCESE/RawFiles/2021/210439-471_DB.xlsx'
 # usecols = (0,2) to define the number of columns to read in
 raw_df = pd.read_excel(file, sheet_name=0, header=None, keep_default_na=False)
 raw = raw_df.values.tolist()
@@ -142,9 +142,10 @@ headerList = ['ActivityIdentifier',	'lab_accession', 'characteristic_name',	'val
 df_results = pd.DataFrame(results, columns=headerList)
 df_review_results = pd.DataFrame(review, columns=header)
 
-df_results.to_excel('C:/Users/deepuser/Documents/Projects/wqDB_docs/testing_data/CESE_ResultForInsert_2020.xlsx',
+accs = file.rsplit('/')[-1] #file name with accession numbers from CESE
+df_results.to_excel('D:/CESE/CESE_ResultForInsert_' + accs,
                     index =  False)
-df_review_results.to_excel('C:/Users/deepuser/Documents/Projects/wqDB_docs/testing_data/CESE_ReviewResults_2020.xlsx',
+df_review_results.to_excel('D:/CESE/CESE_ReviewResults_' + accs,
                            index = False)
 
 
@@ -162,6 +163,6 @@ for i in range(len(ins_d)):
 
 df_missing_results = pd.DataFrame(field_info, columns=header)
 
-df_missing_results.to_excel('C:/Users/deepuser/Documents/Projects/wqDB_docs/testing_data/'
-                            'CESE_MissingActivityForResultsInsert_2020.xlsx',
+df_missing_results.to_excel('D:/CESE/'
+                            'CESE_MissingActivityForResultsInsert_' + accs,
                     index =  False)
