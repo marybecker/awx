@@ -1,0 +1,10 @@
+<return xmlns='http://exchangenetwork.net/schemas/validator/1.1/validatorEx.xsd'>
+  <transactionId>_e0c5b445-d429-4346-b6c4-ae00b3f0c091</transactionId>
+  <validationType>schema</validationType>
+  <processStatus>Finished</processStatus>
+  <documentStatus>Valid</documentStatus>
+  <timeStamp>2022-12-29T16:53:00Z</timeStamp>
+  <results>Congratulations! The document,_52b5ae26-e425-4781-a20d-3a6cfda7c726.xml, is valid according to the schema.
+
+</results>
+</return>

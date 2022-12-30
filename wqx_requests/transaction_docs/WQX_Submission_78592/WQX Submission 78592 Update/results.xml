@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document Id="78592" xmlns="http://www.exchangenetwork.net/schema/v1.0/ExchangeNetworkDocument.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Header>
+    <Author>Mary Becker</Author>
+    <Organization>Connecticut Department of Energy and Environmental Protection</Organization>
+    <Title>WQX</Title>
+    <CreationTime>2022-03-18T05:56:56-04:00</CreationTime>
+    <ContactInfo>mary.becker@ct.gov
+860-424-3262</ContactInfo>
+    <Notification>mary.becker@ct.gov</Notification>
+  </Header>
+  <Payload Operation="Update-Insert">
+    <WQX xmlns="http://www.exchangenetwork.net/schema/wqx/3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.exchangenetwork.net/schema/wqx/3 http://www.exchangenetwork.net/schema/wqx/3/index.xsd">
+      <Organization>
+        <OrganizationDescription>
+          <OrganizationIdentifier>CT_DEP01_WQX</OrganizationIdentifier>
+          <OrganizationFormalName>Connecticut Department Of Energy And Environmental Protection</OrganizationFormalName>
+          <OrganizationDescriptionText>This is the central agency for all water quality data in this system</OrganizationDescriptionText>
+        </OrganizationDescription>
+        <ElectronicAddress>
+          <ElectronicAddressText>mike.beauchene@ct.gov</ElectronicAddressText>
+          <ElectronicAddressTypeName>Email</ElectronicAddressTypeName>
+        </ElectronicAddress>
+        <ElectronicAddress>
+          <ElectronicAddressText>http://www.ctdep.gov</ElectronicAddressText>
+          <ElectronicAddressTypeName>Internet</ElectronicAddressTypeName>
+        </ElectronicAddress>
+        <Telephonic>
+          <TelephoneNumberText>(860) 424-4185</TelephoneNumberText>
+          <TelephoneNumberTypeName>Office</TelephoneNumberTypeName>
+          <TelephoneExtensionNumberText>4185</TelephoneExtensionNumberText>
+        </Telephonic>
+        <Telephonic>
+          <TelephoneNumberText>(860) 424-4055</TelephoneNumberText>
+          <TelephoneNumberTypeName>Fax</TelephoneNumberTypeName>
+        </Telephonic>
+        <OrganizationAddress>
+          <AddressTypeName>Location</AddressTypeName>
+          <AddressText>79 Elm Street</AddressText>
+          <LocalityName>HARTFORD</LocalityName>
+          <StateCode>CT</StateCode>
+          <PostalCode>06106</PostalCode>
+          <CountryCode>US</CountryCode>
+          <CountyCode>003</CountyCode>
+        </OrganizationAddress>
+        <OrganizationAddress>
+          <AddressTypeName>Mailing</AddressTypeName>
+          <AddressText>79 Elm Street</AddressText>
+          <LocalityName>HARTFORD</LocalityName>
+          <StateCode>CT</StateCode>
+          <PostalCode>06106</PostalCode>
+          <CountryCode>US</CountryCode>
+          <CountyCode>003</CountyCode>
+        </OrganizationAddress>
+        <OrganizationAddress>
+          <AddressTypeName>Shipping</AddressTypeName>
+          <AddressText>79 Elm Street</AddressText>
+          <LocalityName>HARTFORD</LocalityName>
+          <StateCode>CT</StateCode>
+          <PostalCode>06106</PostalCode>
+          <CountryCode>US</CountryCode>
+          <CountyCode>003</CountyCode>
+        </OrganizationAddress>
+        <Project>
+          <ProjectIdentifier>beachBacteria</ProjectIdentifier>
+          <ProjectName>Ambient Bacteria Grab for State Beach Program</ProjectName>
+          <ProjectDescriptionText>Ambient Bacteria Testing at State Beaches</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>beachCyano</ProjectIdentifier>
+          <ProjectName>Cyanobacteria Toxin Sampling at Bathing Beaches</ProjectName>
+          <ProjectDescriptionText>Cyanobacteria Toxin Sampling at Bathing Beaches</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>benthicAlgABM</ProjectIdentifier>
+          <ProjectName>Ambient Benthic Algae River Sampling</ProjectName>
+          <ProjectDescriptionText>Ambient Benthic Algae River Sampling</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>fishABM</ProjectIdentifier>
+          <ProjectName>Ambient Fish Sampling - Monitoring</ProjectName>
+          <ProjectDescriptionText>Ambient Fish Sampling - Monitoring</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>fishIFD</ProjectIdentifier>
+          <ProjectName>Ambient Fish Sampling - Fisheries</ProjectName>
+          <ProjectDescriptionText>Ambient Fish Sampling - Fisheries</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>HOBOconductivity</ProjectIdentifier>
+          <ProjectName>Conductivity Monitoring Project</ProjectName>
+          <ProjectDescriptionText>Ambient data associated with hourly HOBO logger conductivity data</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>lakesABM</ProjectIdentifier>
+          <ProjectName>Ambient Lakes Sampling</ProjectName>
+          <ProjectDescriptionText>Ambient Lakes Sampling</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>lakesNLA</ProjectIdentifier>
+          <ProjectName>National Lakes Assessment</ProjectName>
+          <ProjectDescriptionText>Additional data collected by CT DEEP Monitoring and Assessment Program during the National Lakes Assessment</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>LIS</ProjectIdentifier>
+          <ProjectName>Ambient Long Island Sound Sampling</ProjectName>
+          <ProjectDescriptionText>Ambient Long Island Sound Sampling</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>macroInvertABM</ProjectIdentifier>
+          <ProjectName>Ambient Macroinvertebrate Sampling</ProjectName>
+          <ProjectDescriptionText>Ambient Macroinvertebrate Sampling</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>miscABM</ProjectIdentifier>
+          <ProjectName>Miscellaneous Ambient Monitoring Sampling</ProjectName>
+          <ProjectDescriptionText>Miscellaneous Ambient Monitoring and Historic Data Not Associated to a Project</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>otherBacteria</ProjectIdentifier>
+          <ProjectName>Ambient Bacteria Grab</ProjectName>
+          <ProjectDescriptionText>Ambient Bacteria Testing - Not associated with State Beaches</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+        <Project>
+          <ProjectIdentifier>riversNRSA</ProjectIdentifier>
+          <ProjectName>National Rivers and Streams Assessment</ProjectName>
+          <ProjectDescriptionText>Additional data collected by CT DEEP Monitoring and Assessment Program during the National Rivers and Streams Assessments</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>true</QAPPApprovedIndicator>
+          <QAPPApprovalAgencyName>EPA</QAPPApprovalAgencyName>
+        </Project>
+        <Project>
+          <ProjectIdentifier>TMDL</ProjectIdentifier>
+          <ProjectName>TMDL Sampling</ProjectName>
+          <ProjectDescriptionText>Sampling to Support TMDL Program</ProjectDescriptionText>
+          <SamplingDesignTypeCode>Targeted</SamplingDesignTypeCode>
+          <QAPPApprovedIndicator>false</QAPPApprovedIndicator>
+        </Project>
+      </Organization>
+    </WQX>
+  </Payload>
+</Document>

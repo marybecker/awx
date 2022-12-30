@@ -60,10 +60,20 @@ def getActType(ActType):
         return 'FM'
     if ActType == 'Quality Control Sample-Field Blank':
         return 'QCFB'
+    if ActType == 'Quality Control Sample-Trip Blank':
+        return 'QCTB'
     if ActType == 'Quality Control Sample-Field Replicate':
         return 'QCFR'
     else:
         return 'O'
+
+def getSampMeth(SampMeth):
+    if SampMeth == 'discreteChlorA':
+        return 'CHL-'
+    if SampMeth == 'grabSampleSurfaceBacti':
+        return 'BACT-'
+    else:
+        return 'CHEM-'
 
 
 def get_dst_change_points(y, zone='America/New_York'):
@@ -178,8 +188,10 @@ try:
                     else:
                         actMediaSub = 'Surface Water'
                     # Create activity ID string
-                    actID = str(str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
-                                + '-' + raw[i][4].replace(':', '') + '-' + 'CHEM-' + str(raw[i][9]) + raw[i][10])
+                    actID = str(
+                        str(int(raw[i][0])) + '-' + (getActType(raw[i][2])) + '-' + raw[i][3].replace('-', '')
+                        + '-' + raw[i][4].replace(':', '') + '-' + getSampMeth(raw[i][6]) + str(raw[i][9]) + raw[i][10])
+
                     actMedia = 'Water'
                     equipment = 'Water Bottle'
                     user_name = fpath_base.rsplit('\\')[-1]
@@ -213,5 +225,9 @@ try:
                 f.write(s)
 except FileNotFoundError as e:
     print(e)
+
+
+
+
 
 

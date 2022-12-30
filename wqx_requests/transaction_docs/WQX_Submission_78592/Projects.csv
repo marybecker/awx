@@ -1,0 +1,15 @@
+ProjectIdentifier,ProjectName,ProjectDescriptionText,SamplingDesignTypeCode,QAPPApprovedIndicator,QAPPApprovalAgencyName
+beachBacteria,Ambient Bacteria Grab for State Beach Program,Ambient Bacteria Testing at State Beaches,Targeted,1,EPA
+beachCyano,Cyanobacteria Toxin Sampling at Bathing Beaches,Cyanobacteria Toxin Sampling at Bathing Beaches,Targeted,0,
+benthicAlgABM,Ambient Benthic Algae River Sampling,Ambient Benthic Algae River Sampling,Targeted,1,EPA
+fishABM,Ambient Fish Sampling - Monitoring,Ambient Fish Sampling - Monitoring,Targeted,1,EPA
+fishIFD,Ambient Fish Sampling - Fisheries,Ambient Fish Sampling - Fisheries,Targeted,0,
+HOBOconductivity,Conductivity Monitoring Project,Ambient data associated with hourly HOBO logger conductivity data,Targeted,0,
+lakesABM,Ambient Lakes Sampling,Ambient Lakes Sampling,Targeted,0,
+lakesNLA,National Lakes Assessment,Additional data collected by CT DEEP Monitoring and Assessment Program during the National Lakes Assessment,Targeted,1,EPA
+LIS,Ambient Long Island Sound Sampling,Ambient Long Island Sound Sampling,Targeted,1,EPA
+macroInvertABM,Ambient Macroinvertebrate Sampling,Ambient Macroinvertebrate Sampling,Targeted,1,EPA
+miscABM,Miscellaneous Ambient Monitoring Sampling,Miscellaneous Ambient Monitoring and Historic Data Not Associated to a Project,Targeted,0,
+otherBacteria,Ambient Bacteria Grab,Ambient Bacteria Testing - Not associated with State Beaches,Targeted,0,
+riversNRSA,National Rivers and Streams Assessment,Additional data collected by CT DEEP Monitoring and Assessment Program during the National Rivers and Streams Assessments,Targeted,1,EPA
+TMDL,TMDL Sampling,Sampling to Support TMDL Program,Targeted,0,
